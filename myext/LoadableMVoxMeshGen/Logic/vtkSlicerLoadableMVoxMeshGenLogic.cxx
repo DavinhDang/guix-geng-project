@@ -6,6 +6,7 @@
 #include <vtkMRMLScalarVolumeNode.h>
 #include <vtkMRMLLabelMapVolumeNode.h>
 #include <vtkMRMLStorageNode.h>
+#include <vtkMRMLStorableNode.h>
 
 // VTK includes
 #include <vtkIntArray.h>
@@ -105,28 +106,40 @@ void vtkSlicerLoadableMVoxMeshGenLogic::RunMVox(
   // Add input files
   if (masksNode)
   {
-    vtkMRMLStorageNode* storageNode = masksNode->GetStorageNode();
-    if (storageNode && storageNode->GetFileName())
+    vtkMRMLStorableNode* storableNode = vtkMRMLStorableNode::SafeDownCast(masksNode);
+    if (storableNode)
     {
-      cmd << " -imask \"" << storageNode->GetFileName() << "\"";
+      vtkMRMLStorageNode* storageNode = storableNode->GetStorageNode();
+      if (storageNode && storageNode->GetFileName())
+      {
+        cmd << " -imask \"" << storageNode->GetFileName() << "\"";
+      }
     }
   }
 
   if (attributesNode)
   {
-    vtkMRMLStorageNode* storageNode = attributesNode->GetStorageNode();
-    if (storageNode && storageNode->GetFileName())
+    vtkMRMLStorableNode* storableNode = vtkMRMLStorableNode::SafeDownCast(attributesNode);
+    if (storableNode)
     {
-      cmd << " -iattr \"" << storageNode->GetFileName() << "\"";
+      vtkMRMLStorageNode* storageNode = storableNode->GetStorageNode();
+      if (storageNode && storageNode->GetFileName())
+      {
+        cmd << " -iattr \"" << storageNode->GetFileName() << "\"";
+      }
     }
   }
 
   if (tensorsNode)
   {
-    vtkMRMLStorageNode* storageNode = tensorsNode->GetStorageNode();
-    if (storageNode && storageNode->GetFileName())
+    vtkMRMLStorableNode* storableNode = vtkMRMLStorableNode::SafeDownCast(tensorsNode);
+    if (storableNode)
     {
-      cmd << " -itensor \"" << storageNode->GetFileName() << "\"";
+      vtkMRMLStorageNode* storageNode = storableNode->GetStorageNode();
+      if (storageNode && storageNode->GetFileName())
+      {
+        cmd << " -itensor \"" << storageNode->GetFileName() << "\"";
+      }
     }
   }
 

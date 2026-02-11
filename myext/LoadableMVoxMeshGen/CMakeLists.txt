@@ -1,6 +1,10 @@
 #-----------------------------------------------------------------------------
 set(MODULE_NAME LoadableMVoxMeshGen)
 
+# Exclude corrupted Qt WebEngine library
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-needed")
+list(APPEND CMAKE_MODULE_LINKER_FLAGS "-Wl,--exclude-libs,ALL")
+
 #-----------------------------------------------------------------------------
 set(MODULE_EXPORT_DIRECTIVE "Q_SLICER_QTMODULES_${MODULE_NAME}_EXPORT")
 
@@ -35,6 +39,10 @@ set(MODULE_RESOURCES
   )
 
 #-----------------------------------------------------------------------------
+# Build Logic library first
+add_subdirectory(Logic)
+
+#-----------------------------------------------------------------------------
 slicerMacroBuildLoadableModule(
   NAME ${MODULE_NAME}
   EXPORT_DIRECTIVE ${MODULE_EXPORT_DIRECTIVE}
@@ -51,5 +59,3 @@ slicerMacroBuildLoadableModule(
 if(BUILD_TESTING)
   add_subdirectory(Testing)
 endif()
-
-#-----------------------------------------------------------------------------

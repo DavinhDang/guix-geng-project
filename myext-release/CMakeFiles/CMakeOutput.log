@@ -1,0 +1,17 @@
+Determining if the CXX compiler accepts the flag -Wno-deprecated passed with the following output:
+Change Dir: '/home/davinh/guix-geng-project/myext-release/CMakeFiles/CMakeTmp'
+
+Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_9ab83/fast
+/usr/bin/gmake  -f CMakeFiles/cmTC_9ab83.dir/build.make CMakeFiles/cmTC_9ab83.dir/build
+gmake[1]: Entering directory '/home/davinh/guix-geng-project/myext-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9ab83.dir/src.cxx.o
+/usr/bin/c++   -fno-sized-deallocation -msse2 -Wno-deprecated -std=c++17 -o CMakeFiles/cmTC_9ab83.dir/src.cxx.o -c /home/davinh/guix-geng-project/myext-release/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_9ab83
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9ab83.dir/link.txt --verbose=1
+/usr/bin/c++   -fno-sized-deallocation -msse2 -Wno-deprecated CMakeFiles/cmTC_9ab83.dir/src.cxx.o -o cmTC_9ab83 
+gmake[1]: Leaving directory '/home/davinh/guix-geng-project/myext-release/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0;}
+

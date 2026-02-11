@@ -1,0 +1,2 @@
+# Empty dependencies file for qSlicerLoadableMVoxMeshGenModuleGenericCxxTests.
+# This may be replaced when dependencies are built.

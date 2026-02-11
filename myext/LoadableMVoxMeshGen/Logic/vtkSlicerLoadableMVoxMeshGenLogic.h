@@ -5,21 +5,21 @@
 #include "vtkSlicerModuleLogic.h"
 
 // MRML includes
-#include <vtkMRMLNode.h>
 
 // STD includes
 #include <string>
 
 #include "vtkSlicerLoadableMVoxMeshGenModuleLogicExport.h"
 
-class VTK_SLICER_LoadableMVoxMeshGen_MODULE_LOGIC_EXPORT vtkSlicerLoadableMVoxMeshGenLogic :
-  public vtkSlicerModuleLogic
+/// \ingroup Slicer_QtModules_LoadableMVoxMeshGen
+class VTK_SLICER_LOADABLEMVOXMESHGEN_MODULE_LOGIC_EXPORT vtkSlicerLoadableMVoxMeshGenLogic
+  : public vtkSlicerModuleLogic
 {
 public:
 
   static vtkSlicerLoadableMVoxMeshGenLogic *New();
   vtkTypeMacro(vtkSlicerLoadableMVoxMeshGenLogic, vtkSlicerModuleLogic);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
 
   /// Run MVox mesh generator
   void RunMVox(
@@ -35,19 +35,19 @@ public:
 
 protected:
   vtkSlicerLoadableMVoxMeshGenLogic();
-  virtual ~vtkSlicerLoadableMVoxMeshGenLogic();
+  ~vtkSlicerLoadableMVoxMeshGenLogic() override;
 
-  virtual void SetMRMLSceneInternal(vtkMRMLScene* newScene);
+  void SetMRMLSceneInternal(vtkMRMLScene* newScene) override;
   /// Register MRML Node classes to Scene. Gets called automatically when the MRMLScene is attached to this logic class.
-  virtual void RegisterNodes();
-  virtual void UpdateFromMRMLScene();
-  virtual void OnMRMLSceneNodeAdded(vtkMRMLNode* node);
-  virtual void OnMRMLSceneNodeRemoved(vtkMRMLNode* node);
+  void RegisterNodes() override;
+  void UpdateFromMRMLScene() override;
+  void OnMRMLSceneNodeAdded(vtkMRMLNode* node) override;
+  void OnMRMLSceneNodeRemoved(vtkMRMLNode* node) override;
 
 private:
 
-  vtkSlicerLoadableMVoxMeshGenLogic(const vtkSlicerLoadableMVoxMeshGenLogic&); // Not implemented
-  void operator=(const vtkSlicerLoadableMVoxMeshGenLogic&); // Not implemented
+  vtkSlicerLoadableMVoxMeshGenLogic(const vtkSlicerLoadableMVoxMeshGenLogic&) = delete;
+  void operator=(const vtkSlicerLoadableMVoxMeshGenLogic&) = delete;
 };
 
 #endif

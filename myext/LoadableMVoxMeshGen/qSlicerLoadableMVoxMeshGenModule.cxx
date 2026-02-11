@@ -9,9 +9,6 @@
 #include "qSlicerLoadableMVoxMeshGenModuleWidget.h"
 
 //-----------------------------------------------------------------------------
-Q_EXPORT_PLUGIN2(qSlicerLoadableMVoxMeshGenModule, qSlicerLoadableMVoxMeshGenModule);
-
-//-----------------------------------------------------------------------------
 class qSlicerLoadableMVoxMeshGenModulePrivate
 {
 public:
@@ -40,7 +37,7 @@ QString qSlicerLoadableMVoxMeshGenModule::helpText() const
 {
   return "This module creates hexahedral meshes using MVox. "
          "For more information see: "
-         "https://github.com/SlicerCBM/SlicerCBM/tree/master/MVoxMeshGenerator";
+         "https://github.com/SlicerCBM/SlicerCBM/tree/master/LoadableMVoxMeshGen";
 }
 
 //-----------------------------------------------------------------------------

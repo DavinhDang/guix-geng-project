@@ -2,6 +2,7 @@ project(vtkSlicer${MODULE_NAME}ModuleLogic)
 
 set(KIT ${PROJECT_NAME})
 
+string(TOUPPER ${MODULE_NAME} MODULE_NAME_UPPER)
 set(${KIT}_EXPORT_DIRECTIVE "VTK_SLICER_${MODULE_NAME_UPPER}_MODULE_LOGIC_EXPORT")
 
 set(${KIT}_INCLUDE_DIRECTORIES
@@ -13,7 +14,6 @@ set(${KIT}_SRCS
   )
 
 set(${KIT}_TARGET_LIBRARIES
-  ${ITK_LIBRARIES}
   )
 
 #-----------------------------------------------------------------------------
@@ -23,4 +23,5 @@ SlicerMacroBuildModuleLogic(
   INCLUDE_DIRECTORIES ${${KIT}_INCLUDE_DIRECTORIES}
   SRCS ${${KIT}_SRCS}
   TARGET_LIBRARIES ${${KIT}_TARGET_LIBRARIES}
+  DISABLE_WRAP_PYTHON
   )
