@@ -7,8 +7,6 @@ name: Guix Channel
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * 1'
@@ -72,4 +70,3 @@ jobs:
     - name: Stop Guix Daemon
       if: always()
       run: sudo systemctl stop guix-daemon
-      
