@@ -1,6 +1,8 @@
 name: Guix Channel
 
-# Comment
+# Configures the systole and mvox channels in channels.scm, runs "guix pull" to
+# fetch the channels and update Guix, then installs mvox with "guix install mvox".
+# This verifies that the published channels work correctly.
 
 on:
   push:
@@ -28,7 +30,7 @@ jobs:
         echo "LANG=en_US.utf8" >> $GITHUB_ENV
     - name: Configure Channels
       run: |
-        mkdir -p ~./config/guix
+        mkdir -p ~/.config/guix
         cat > ~/.config/guix/channels.scm << 'EOF'
         (cons* (channel
                 (name 'systole)
@@ -49,6 +51,8 @@ jobs:
       run: guix lint mfem mfem@4.5 mvox mvox-mfem-4.5
     - name: Install mvox
       run: guix install mvox
+    - name: Install slicer
+      run: guix install slicer-5.8
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
     - name: Collect Guix Build Logs
@@ -69,5 +73,3 @@ jobs:
       if: always()
       run: sudo systemctl stop guix-daemon
       
-      
-    
