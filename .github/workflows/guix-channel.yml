@@ -1,0 +1,72 @@
+name: Guix Channel
+
+# Configures the systole and mvox channels in channels.scm, runs "guix pull" to
+# fetch the channels and update Guix, then installs mvox with "guix install mvox".
+# This verifies that the published channels work correctly.
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 720
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-latest]
+
+    steps:
+    - name: Install Guix
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y guix
+        echo "LANG=en_US.utf8" >> $GITHUB_ENV
+    - name: Configure Channels
+      run: |
+        mkdir -p ~/.config/guix
+        cat > ~/.config/guix/channels.scm << 'EOF'
+        (cons* (channel
+                (name 'systole)
+                (url "https://github.com/SystoleOS/guix-systole.git")
+                (branch "main"))
+              (channel
+                (name 'mvox)
+                (url "https://github.com/benzwick/guix-mvox")
+                (branch "main"))
+              %default-channels)
+        EOF
+    - name: Update Guix
+      run: |
+        guix pull
+        echo "$HOME/.config/guix/current/bin" >> $GITHUB_PATH
+    - name: Lint Packages
+      continue-on-error: true
+      run: guix lint mfem mfem@4.5 mvox mvox-mfem-4.5
+    - name: Install mvox
+      run: guix install mvox
+    - name: Install slicer
+      run: guix install --fallback slicer-5.8
+    - name: Add Guix profile to PATH
+      run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
+    - name: Collect Guix Build Logs
+      if: always()
+      run: |
+        mkdir -p guix-build-logs
+        for f in /var/log/guix/drvs/*/*; do
+          sudo cp "$f" guix-build-logs/ || true
+        done
+        gunzip guix-build-logs/*.gz 2>/dev/null || true
+    - name: Upload Guix Build Logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: guix-build-logs-${{ matrix.os }}
+        path: guix-build-logs/
+    - name: Stop Guix Daemon
+      if: always()
+      run: sudo systemctl stop guix-daemon

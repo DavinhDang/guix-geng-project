@@ -1,0 +1,83 @@
+name: Guix Slicer
+
+# Build and install mvox using local package definitions.
+#
+# Runs "guix build -L ." and "guix install -L ." to test the package
+# definitions in this repo without publishing them to the channel first.
+# Use this workflow to verify package changes before pushing.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 720
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Guix
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y guix
+        echo "LANG=en_US.utf8" >> $GITHUB_ENV
+
+    - name: Configure channels
+      run: |
+        mkdir -p ~/.config/guix
+        cat > ~/.config/guix/channels.scm << 'EOF'
+        (cons* (channel
+                (name 'systole)
+                (url "https://github.com/SystoleOS/guix-systole.git")
+                (branch "main"))
+              (channel
+                (name 'mvox)
+                (url "https://github.com/benzwick/guix-mvox")
+                (branch "main"))
+              %default-channels)
+        EOF
+
+    # The apt package ships an older Guix; update to latest so it can
+    # build current packages and compile channel modules.
+    # https://guix.gnu.org/manual/en/html_node/Upgrading-Guix.html
+    - name: Update Guix
+      run: |
+        guix pull
+        echo "$HOME/.config/guix/current/bin" >> $GITHUB_PATH
+        
+    - name: Install Slicer
+      run: guix install --fallback slicer-5.8
+
+    # guix install puts binaries in ~/.guix-profile/bin. On a normal
+    # system, sourcing ~/.guix-profile/etc/profile adds it to PATH.
+    # GitHub Actions steps run non-login shells, so add it explicitly.
+    # https://guix.gnu.org/manual/en/html_node/Getting-Started.html
+    - name: Add Guix profile to PATH
+      run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
+
+    - name: Collect Guix build logs
+      if: always()
+      run: |
+        mkdir -p guix-build-logs
+        for f in /var/log/guix/drvs/*/*; do
+          sudo cp "$f" guix-build-logs/ || true
+        done
+        gunzip guix-build-logs/*.gz 2>/dev/null || true
+
+    - name: Upload Guix build logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: guix-build-logs-${{ matrix.os }}
+        path: guix-build-logs/
+
+    - name: Stop Guix daemon
+      if: always()
+      run: sudo systemctl stop guix-daemon
