@@ -52,7 +52,7 @@ jobs:
       run: guix lint mfem mfem@4.5 mvox mvox-mfem-4.5
       
     - name: Install mvox
-      run: guix install mvox
+      run: guix install --fallback mvox
       
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
