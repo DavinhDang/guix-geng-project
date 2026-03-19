@@ -50,7 +50,7 @@ jobs:
     - name: Install mvox
       run: guix install mvox
     - name: Install slicer
-      run: guix install slicer-5.8
+      run: guix install --fallback slicer-5.8
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
     - name: Collect Guix Build Logs
