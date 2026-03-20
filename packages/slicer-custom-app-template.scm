@@ -15,7 +15,7 @@
 ;; with SystoleOS. If not, see <https://www.gnu.org/licenses/>.
 ;; 
 
-(define-module (guix-systole packages slicer-custom-app-template)
+(define-module (guix-geng-project packages slicer-custom-app-template)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages algebra)
@@ -65,16 +65,16 @@
 (define-public slicer-custom-app-template
   (package
     (name "slicer-custom-app")
-    (version "2025.02.11") ;; Using date-based versioning since no formal releases
+    (version "1.0.0") ;; Using date-based versioning since no formal releases
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/KitwareMedical/SlicerCustomAppTemplate")
+             (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
              (commit "main"))) ;; Pin to a specific commit in production
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0n9brxyil23vr05x2l1scv8n5djhh6cvf3clx9kz156nlp1jway4")))) ;; Update with actual hash
+        (base32 "0sbdl8z2a8sgv9ngjaqdzzmv9yhggjzw0rzalddl6j7xp9k4lcrj")))) ;; Update with actual hash
     (build-system cmake-build-system)
     (arguments
      (list #:tests? #f
@@ -169,8 +169,8 @@
                             (add-after 'install 'wrap
                                        (lambda* (#:key outputs #:allow-other-keys)
                                                 (let* ((out (assoc-ref outputs "out"))
-                                                       (app-launcher (string-append out "/CustomApp"))
-                                                       (app-wrapper (string-append out "/CustomApp-wrapper")))
+                                                       (app-launcher (string-append out "/SlicerCustomAppTemplate"))
+                                                       (app-wrapper (string-append out "/SlicerCustomAppTemplate-wrapper")))
                                                   ;; Create wrapper for the custom app
                                                   (when (file-exists? app-launcher)
                                                     (call-with-output-file app-wrapper
@@ -186,8 +186,8 @@ exec ~a --additional-module-path \"$HOME/.guix-profile/lib/Slicer-5.8/SlicerModu
                             (add-after 'wrap 'symlink-app-launcher
                                        (lambda* (#:key outputs #:allow-other-keys)
                                                 (let* ((out (assoc-ref outputs "out"))
-                                                       (wrapper (string-append out "/CustomApp-wrapper"))
-                                                       (bin-link (string-append out "/bin/CustomApp")))
+                                                       (wrapper (string-append out "/SlicerCustomAppTemplate-wrapper"))
+                                                       (bin-link (string-append out "/bin/SlicerCustomAppTemplate")))
                                                   (when (file-exists? wrapper)
                                                     (symlink wrapper bin-link))
                                                   #t))))))
