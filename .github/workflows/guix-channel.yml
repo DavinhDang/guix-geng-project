@@ -26,6 +26,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y guix
         echo "LANG=en_US.utf8" >> $GITHUB_ENV
+        
     - name: Configure Channels
       run: |
         mkdir -p ~/.config/guix
@@ -40,19 +41,22 @@ jobs:
                 (branch "main"))
               %default-channels)
         EOF
+        
     - name: Update Guix
       run: |
         guix pull
         echo "$HOME/.config/guix/current/bin" >> $GITHUB_PATH
+        
     - name: Lint Packages
       continue-on-error: true
       run: guix lint mfem mfem@4.5 mvox mvox-mfem-4.5
+      
     - name: Install mvox
-      run: guix install mvox
-    - name: Install slicer
-      run: guix install --fallback slicer-5.8
+      run: guix install --fallback mvox
+      
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
+      
     - name: Collect Guix Build Logs
       if: always()
       run: |
@@ -61,12 +65,14 @@ jobs:
           sudo cp "$f" guix-build-logs/ || true
         done
         gunzip guix-build-logs/*.gz 2>/dev/null || true
+        
     - name: Upload Guix Build Logs
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: guix-build-logs-${{ matrix.os }}
         path: guix-build-logs/
+        
     - name: Stop Guix Daemon
       if: always()
       run: sudo systemctl stop guix-daemon
