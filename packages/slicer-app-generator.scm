@@ -5,7 +5,7 @@
 ;; Users can then generate their own custom apps and build them separately
 ;;
 
-(define-module (guix-systole packages slicer-app-generator)
+(define-module (guix-geng-project packages slicer-app-generator)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages python-xyz)
@@ -14,7 +14,7 @@
   #:use-module (guix git-download)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (guix-systole packages slicer))
+  #:use-module (systole packages slicer))
 
 (define-public slicer-app-generator
   (package
