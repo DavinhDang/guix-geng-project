@@ -4,7 +4,7 @@
 ;; Updated slicer-custom-app-template.scm compatible with slicer.scm
 ;;
 
-(define-module (systole packages slicer-custom-app-template)
+(define-module (guix-geng-project packages slicer-custom-app-template)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages algebra)
@@ -61,7 +61,7 @@
              (commit "main"))) ; Pin to specific commit in production
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0000000000000000000000000000000000000000000000000000"))
+        (base32 "0wizz72x1jlg5dri1ih310q1sgf1n08fx4gx4y5ns6wyh2mry8j5"))
        ;; Note: You may need patches for building against system Slicer
        (patches (search-patches
                  ;; Add any patches you need here
@@ -197,8 +197,8 @@ endif()
                  (lambda* (#:key outputs #:allow-other-keys)
                    (let* ((out (assoc-ref outputs "out"))
                           ;; App name depends on cookiecutter template
-                          (app-launcher (string-append out "/bin/CustomApp"))
-                          (app-wrapper (string-append out "/bin/CustomApp-real")))
+                          (app-launcher (string-append out "/bin/SlicerCustomAppTemplate"))
+                          (app-wrapper (string-append out "/bin/SlicerCustomAppTemplate-real")))
                      ;; Only wrap if launcher exists
                      (when (file-exists? app-launcher)
                        ;; Rename original launcher
