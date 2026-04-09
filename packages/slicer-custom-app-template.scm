@@ -55,7 +55,7 @@
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/KitwareMedical/SlicerCustomAppTemplate")
+             (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
              (commit "main"))) ; Pin to specific commit in production
        (file-name (git-file-name name version))
        (sha256
@@ -278,5 +278,5 @@ This package is configured to build against the modular slicer-5.8 package,
 which provides better support for custom application development with enhanced
 CMake configuration and development file installation.")
     
-    (home-page "https://github.com/KitwareMedical/SlicerCustomAppTemplate")
+    (home-page "https://github.com/DavinhDang/SlicerCustomAppTemplate")
     (license license:asl2.0)))
