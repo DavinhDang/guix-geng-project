@@ -3,7 +3,7 @@
 ;; Users can then generate their own custom apps and build them separately
 ;;
 
-(define-module (packages slicer-app-generator)
+(define-module (guix-geng-project packages slicer-app-generator)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages python-xyz)

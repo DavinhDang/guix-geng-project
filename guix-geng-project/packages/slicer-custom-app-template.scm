@@ -2,7 +2,7 @@
 ;; Updated slicer-custom-app-template.scm compatible with slicer.scm
 ;;
 
-(define-module (packages slicer-custom-app-template)
+(define-module (guix-geng-project packages slicer-custom-app-template)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages algebra)

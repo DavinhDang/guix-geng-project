@@ -1,2 +1,8 @@
 (channel
- (version 0))
+  (version 0)
+  (directory "guix-geng-project")
+  (dependencies
+   (channel
+    (name 'systole)
+    (url "https://github.com/SystoleOS/guix-systole.git")
+    (branch "main"))))
