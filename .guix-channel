@@ -3,6 +3,6 @@
   (directory "guix-geng-project")
   (dependencies
    (channel
-    (name 'systole)
+    (name systole)
     (url "https://github.com/SystoleOS/guix-systole.git")
     (branch "main"))))
