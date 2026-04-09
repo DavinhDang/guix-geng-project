@@ -1,6 +1,4 @@
 ;; 
-;; Copyright @ 2025 Oslo University Hospital
-;;
 ;; Alternative approach: Package the template generator as a tool
 ;; Users can then generate their own custom apps and build them separately
 ;;

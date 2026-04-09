@@ -1,6 +1,4 @@
 ;;
-;; Copyright @ 2025 Oslo University Hospital
-;;
 ;; Updated slicer-custom-app-template.scm compatible with slicer.scm
 ;;
 
