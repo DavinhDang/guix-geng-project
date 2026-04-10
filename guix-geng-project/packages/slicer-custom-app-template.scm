@@ -233,7 +233,7 @@ exec ~a \"$@\"
            ;; Qt5
            qtbase-5
            qtmultimedia-5
-           qtxmlpatterns
+           qtxmlpatterns-5
            qtdeclarative-5
            qtsvg-5
            qtx11extras
