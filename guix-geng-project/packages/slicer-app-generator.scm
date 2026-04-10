@@ -26,7 +26,7 @@
              (commit "main"))) ;; Pin to specific commit for reproducibility
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0000000000000000000000000000000000000000000000000000")))) ;; Update hash
+        (base32 "08s5lbyqkz0cfnlgc6nik9yj3mgyg8dvnw8k5ziyf5jx5pbijsj3")))) ;; Update hash
     (build-system python-build-system)
     (arguments
      (list
@@ -126,7 +126,7 @@ For Guix packaging help: Contact guix-systole maintainers
                                            #t))))))
     (inputs
      (list python-cookiecutter
-           python-jinja2-github))
+           python-jinja2))
     (propagated-inputs
      (list slicer-5.8)) ;; Make Slicer available for reference
     (native-inputs
