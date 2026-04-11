@@ -164,12 +164,12 @@
                           (string-append 
                             (assoc-ref inputs "vtkaddon") "/lib/cmake:"
                             (assoc-ref inputs "slicer-5.8") "/lib/cmake:"
-                            (assoc-ref inputs "qtbase-5") "/lib/cmake:"
+                            (assoc-ref inputs "qtbase") "/lib/cmake:"
                             (or (getenv "CMAKE_PREFIX_PATH") "")))
                    
                    ;; Also set Qt5_DIR explicitly
                    (setenv "Qt5_DIR"
-                          (string-append (assoc-ref inputs "qtbase-5")
+                          (string-append (assoc-ref inputs "qtbase")
                                         "/lib/cmake/Qt5"))
                    #t))
                
@@ -210,7 +210,7 @@ export QT_PLUGIN_PATH=\"~a/lib/qt5/plugins${QT_PLUGIN_PATH:+:$QT_PLUGIN_PATH}\"
 exec ~a \"$@\"
 "
                                    (assoc-ref outputs "slicer-5.8")
-                                   (assoc-ref outputs "qtbase-5")
+                                   (assoc-ref outputs "qtbase")
                                    app-wrapper)))
                        ;; Make wrapper executable
                        (chmod app-launcher #o755))
