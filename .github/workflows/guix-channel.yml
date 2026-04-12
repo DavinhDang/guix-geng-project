@@ -1,7 +1,7 @@
 name: Guix Channel
 
-# Configures the systole and mvox channels in channels.scm, runs "guix pull" to
-# fetch the channels and update Guix, then installs mvox with "guix install mvox".
+# Configures the systole and guix-geng-project channels in channels.scm, runs "guix pull" to
+# fetch the channels and update Guix, then installs custom slicer packages
 # This verifies that the published channels work correctly.
 
 on:
@@ -50,10 +50,10 @@ jobs:
         
     - name: Lint Packages
       continue-on-error: true
-      run: guix lint mfem mfem@4.5 mvox mvox-mfem-4.5
+      run: guix lint slicer-custom-app-template myext slicer-app-generator
       
-    - name: Install mvox
-      run: guix install --fallback mvox
+    - name: Install custom slicer packages
+      run: guix install --fallback slicer-custom-app-template my-ext slicer-app-generator
       
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
