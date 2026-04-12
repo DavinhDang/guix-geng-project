@@ -114,7 +114,7 @@
               
               ;; Qt5 path
               (string-append "-DQt5_DIR:PATH="
-                            #$(this-package-input "qtbase-5")
+                            #$(this-package-input "qtbase")
                             "/lib/cmake/Qt5")
               
               ;; VTK configuration
