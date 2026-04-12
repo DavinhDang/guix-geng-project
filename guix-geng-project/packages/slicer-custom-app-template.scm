@@ -171,11 +171,15 @@
            #:phases
            #~(modify-phases %standard-phases
                (add-before 'configure 'patch-fetchcontent-utilities
-                 (lambda* (#:key inputs #:allow-other-keys)
-                   (let ((utils-src (assoc-ref inputs "slicercustomapputilities-source")))
-                     (mkdir-p "SlicerCustomAppUtilities")
-                     (invoke "tar" "--strip-components=1" "-xf" utils-src
-                             "-C" "SlicerCustomAppUtilities"))
+                 (lambda _
+                   (mkdir-p "SlicerCustomAppUtilities")
+                   (invoke "tar" "--strip-components=1" "-xf"
+                           #$(origin
+                               (method url-fetch)
+                               (uri "https://github.com/KitwareMedical/SlicerCustomAppUtilities/archive/1d984a2c9143e2617ff1ffa9d86c51e07dc6321e.tar.gz")
+                               (sha256
+                                (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb")))
+                           "-C" "SlicerCustomAppUtilities")
                    (substitute* "CMakeLists.txt"
                      (("FetchContent_Populate\\(\\$\\{extension_name\\}[^)]*\\)")
                       "# FetchContent skipped - source pre-fetched by Guix"))
@@ -290,7 +294,7 @@ exec ~a \"$@\"
            vtkaddon
            qrestapi))
     
-    (native-inputs (list pkg-config slicercustomapputilities-source))
+    (native-inputs (list pkg-config))
     
     (synopsis "Template for creating custom 3D Slicer applications")
     (description
