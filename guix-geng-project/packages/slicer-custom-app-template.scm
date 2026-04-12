@@ -126,9 +126,7 @@
                             "/lib/cmake/Qt5")
                             
               ;; Slicer sources path (avoids FetchContent network call)
-              (string-append "-Dslicersources_SOURCE_DIR="
-               #$(this-package-input "slicer-5.8")
-               "/lib/Slicer-5.8")
+              "-Dslicersources_SOURCE_DIR=$ENV{slicersources_SOURCE_DIR}"
               
               ;; VTK configuration
               "-DSlicer_VTK_VERSION_MAJOR:STRING=9"
@@ -187,6 +185,18 @@
                           "../source/CMakeLists.txt")
                    #t))
                    
+               (add-before 'configure 'patch-fetchcontent-slicer
+                 (lambda _
+                   (mkdir-p "slicersources-src")
+                   (invoke "tar" "--strip-components=1" "-xf"
+                           #$(origin
+                               (method url-fetch)
+                               (uri "https://github.com/Slicer/Slicer/archive/0e1b0d5bd12e7fd274ded9799f264d01b6014f1f.tar.gz")
+                               (sha256
+                                (base32 "0ln39yrjp4qr2x8w265359xd8kkav3b6zc5npvidf4z8qi80q4ia")))
+                           "-C" "slicersources-src")
+                   #t))
+                   
                (add-before 'configure 'set-cmake-paths
                  (lambda* (#:key inputs #:allow-other-keys)
                    ;; Make dependencies discoverable by CMake
@@ -201,6 +211,9 @@
                    (setenv "Qt5_DIR"
                           (string-append (assoc-ref inputs "qtbase")
                                         "/lib/cmake/Qt5"))
+                   ;; Set Slicer source dir for FetchContent bypass
+                   (setenv "slicersources_SOURCE_DIR"
+                           (string-append (getcwd) "/slicersources-src"))
                    #t))
                
                ;; Patch CMakeLists.txt to ensure EXTENSIONS_DIRBASENAME is defined
