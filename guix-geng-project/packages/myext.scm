@@ -1,5 +1,6 @@
 (define-module (guix-geng-project packages myext)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (gnu packages python)
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system cmake)
@@ -29,14 +30,17 @@
                            #$(this-package-input "slicer-5.8")
                            "/lib/cmake/Slicer-5.8")
             "-DSlicer_SUPERBUILD:BOOL=OFF"
-            "-DBUILD_TESTING:BOOL=OFF")
+            "-DBUILD_TESTING:BOOL=OFF"
+            (string-append "-DPython3_ROOT_DIR="
+                           #$(this-package-input "python")))
         #:phases
         #~(modify-phases %standard-phases
             (add-after 'unpack 'enter-extension-dir
               (lambda _
                 (chdir "myext"))))))
     (inputs
-      (list slicer-5.8))
+      (list slicer-5.8
+            python))
     (synopsis "MVox mesh generation Slicer extension")
     (description
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
