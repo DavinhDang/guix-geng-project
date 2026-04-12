@@ -171,7 +171,8 @@
            #:phases
            #~(modify-phases %standard-phases
                (add-before 'configure 'patch-fetchcontent-utilities
-                 (lambda _
+                 (lambda* (#:key build-dir #:allow-other-keys)
+                   ;; Extract pre-fetched source
                    (mkdir-p "SlicerCustomAppUtilities")
                    (invoke "tar" "--strip-components=1" "-xf"
                            #$(origin
@@ -180,9 +181,10 @@
                                (sha256
                                 (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb")))
                            "-C" "SlicerCustomAppUtilities")
-                   (substitute* "../source/CMakeLists.txt"
-                     (("FetchContent_Populate\\(\\$\\{extension_name\\}\n  SOURCE_DIR     \\$\\{\\$\\{extension_name\\}_SOURCE_DIR\\}\n  GIT_REPOSITORY \\$\\{EP_GIT_PROTOCOL\\}://github\\.com/KitwareMedical/SlicerCustomAppUtilities\\.git\n  GIT_TAG        1d984a2c9143e2617ff1ffa9d86c51e07dc6321e\n  GIT_PROGRESS   1\n  QUIET\n  \\)")
-                      "# FetchContent skipped - source pre-fetched by Guix"))
+                   ;; Use sed for reliable multiline replacement
+                   (invoke "sed" "-i"
+                          "/FetchContent_Populate(${extension_name}/,/^  )/c\\# FetchContent skipped by Guix"
+                          "../source/CMakeLists.txt")
                    #t))
                    
                (add-before 'configure 'set-cmake-paths
