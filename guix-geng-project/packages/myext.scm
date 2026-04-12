@@ -1,6 +1,9 @@
 (define-module (guix-geng-project packages myext)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (gnu packages fontutils)
+  #:use-module (gnu packages image)
   #:use-module (gnu packages python)
+  #:use-module (gnu packages xml)
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system cmake)
@@ -40,7 +43,11 @@
                 (chdir "myext"))))))
     (inputs
       (list slicer-5.8
-            python))
+            python
+            libpng
+            expat
+            libjpeg-turbo
+            freetype))
     (synopsis "MVox mesh generation Slicer extension")
     (description
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
