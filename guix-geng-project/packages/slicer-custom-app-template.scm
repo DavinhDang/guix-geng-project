@@ -32,6 +32,7 @@
   #:use-module (gnu packages xml)
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages)
+  #:use-module (guix build utils)
   #:use-module (guix build-system cmake)
   #:use-module (guix download)
   #:use-module (guix git-download)
@@ -46,6 +47,13 @@
   #:use-module (systole packages qrestapi)
   #:use-module (systole packages teem)
   #:use-module (systole packages vtk))
+
+(define slicercustomapputilities-source
+  (origin
+    (method url-fetch)
+    (uri "https://github.com/KitwareMedical/SlicerCustomAppUtilities/archive/1d984a2c9143e2617ff1ffa9d86c51e07dc6321e.tar.gz")
+    (sha256
+     (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb"))))
 
 (define-public slicer-custom-app-template
   (package
@@ -162,6 +170,17 @@
            
            #:phases
            #~(modify-phases %standard-phases
+               (add-before 'configure 'patch-fetchcontent-utilities
+                 (lambda* (#:key inputs #:allow-other-keys)
+                   (let ((utils-src (assoc-ref inputs "slicercustomapputilities-source")))
+                     (mkdir-p "SlicerCustomAppUtilities")
+                     (invoke "tar" "--strip-components=1" "-xf" utils-src
+                             "-C" "SlicerCustomAppUtilities"))
+                   (substitute* "CMakeLists.txt"
+                     (("FetchContent_Populate\\(\\$\\{extension_name\\}[^)]*\\)")
+                      "# FetchContent skipped - source pre-fetched by Guix"))
+                   #t))
+                   
                (add-before 'configure 'set-cmake-paths
                  (lambda* (#:key inputs #:allow-other-keys)
                    ;; Make dependencies discoverable by CMake
@@ -271,7 +290,7 @@ exec ~a \"$@\"
            vtkaddon
            qrestapi))
     
-    (native-inputs (list pkg-config))
+    (native-inputs (list pkg-config slicercustomapputilities-source))
     
     (synopsis "Template for creating custom 3D Slicer applications")
     (description
