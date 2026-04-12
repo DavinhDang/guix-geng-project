@@ -34,10 +34,11 @@ jobs:
         (cons* (channel
                 (name 'systole)
                 (url "https://github.com/SystoleOS/guix-systole.git")
-                (branch "main"))
+                (branch "main")
+                (commit "3b42810"))
               (channel
-                (name 'mvox)
-                (url "https://github.com/benzwick/guix-mvox")
+                (name 'guix-geng-project)
+                (url "https://github.com/DavinhDang/guix-geng-project.git")
                 (branch "main"))
               %default-channels)
         EOF
