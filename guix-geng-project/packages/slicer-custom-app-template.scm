@@ -180,8 +180,8 @@
                                (sha256
                                 (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb")))
                            "-C" "SlicerCustomAppUtilities")
-                   (substitute* "CMakeLists.txt"
-                     (("FetchContent_Populate\\(\\$\\{extension_name\\}[^)]*\\)")
+                   (substitute* "../source/CMakeLists.txt"
+                     (("FetchContent_Populate\\(\\$\\{extension_name\\}\n  SOURCE_DIR     \\$\\{\\$\\{extension_name\\}_SOURCE_DIR\\}\n  GIT_REPOSITORY \\$\\{EP_GIT_PROTOCOL\\}://github\\.com/KitwareMedical/SlicerCustomAppUtilities\\.git\n  GIT_TAG        1d984a2c9143e2617ff1ffa9d86c51e07dc6321e\n  GIT_PROGRESS   1\n  QUIET\n  \\)")
                       "# FetchContent skipped - source pre-fetched by Guix"))
                    #t))
                    
