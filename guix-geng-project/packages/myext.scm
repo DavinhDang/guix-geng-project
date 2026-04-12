@@ -3,6 +3,7 @@
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages image)
   #:use-module (gnu packages python)
+  #:use-module (gnu packages version-control)
   #:use-module (gnu packages xml)
   #:use-module (guix packages)
   #:use-module (guix git-download)
@@ -34,6 +35,8 @@
                            "/lib/cmake/Slicer-5.8")
             "-DSlicer_SUPERBUILD:BOOL=OFF"
             "-DBUILD_TESTING:BOOL=OFF"
+            "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
+            "-DSlicer_BUILD_CLI:BOOL=OFF"
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
@@ -47,7 +50,8 @@
             libpng
             expat
             libjpeg-turbo
-            freetype))
+            freetype
+            git))
     (synopsis "MVox mesh generation Slicer extension")
     (description
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
