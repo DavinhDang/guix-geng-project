@@ -53,7 +53,7 @@ jobs:
       run: guix lint slicer-custom-app-template myext slicer-app-generator
       
     - name: Install custom slicer packages
-      run: guix install --fallback slicer-custom-app-template my-ext slicer-app-generator
+      run: guix install --fallback slicer-custom-app-template myext slicer-app-generator
       
     - name: Add Guix profile to PATH
       run: echo "$HOME/.guix-profile/bin" >> $GITHUB_PATH
