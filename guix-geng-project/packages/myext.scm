@@ -37,6 +37,12 @@
             "-DBUILD_TESTING:BOOL=OFF"
             "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
             "-DSlicer_BUILD_CLI:BOOL=OFF"
+            (string-append "-DSlicer_EXTENSION_GENERATE_CONFIG="
+                           #$(this-package-input "slicer-5.8")
+                           "/lib/Slicer-5.8/CMake/SlicerExtensionGenerateConfig.cmake")
+            (string-append "-DSlicer_EXTENSION_CPACK="
+                           #$(this-package-input "slicer-5.8")
+                           "/lib/Slicer-5.8/CMake/SlicerExtensionCPack.cmake")
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
