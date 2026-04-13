@@ -196,6 +196,9 @@
                                (sha256
                                 (base32 "0ln39yrjp4qr2x8w265359xd8kkav3b6zc5npvidf4z8qi80q4ia")))
                            "-C" "slicersources-src")
+                   (call-with-output-file "/tmp/slicer-source-dir"
+                     (lambda (port)
+                       (display (string-append (getcwd) "/slicersources-src") port)))
                    #t))
                    
                (add-before 'configure 'set-cmake-paths
@@ -213,11 +216,12 @@
                           (string-append (assoc-ref inputs "qtbase")
                                         "/lib/cmake/Qt5"))
                    ;; Set Slicer source dir for FetchContent bypass
-                   (setenv "slicersources_SOURCE_DIR"
-                           (string-append (getcwd) "/slicersources-src"))
-                   (setenv "CMAKE_MODULE_PATH"
-                           (string-append (getcwd) "/slicersources-src/CMake:"
-                                          (or (getenv "CMAKE_MODULE_PATH") "")))
+                   (let ((slicer-src (call-with-input-file "/tmp/slicer-source-dir"
+                                       (lambda (port) (read-line port)))))
+                     (setenv "slicersources_SOURCE_DIR" slicer-src)
+                     (setenv "CMAKE_MODULE_PATH"
+                             (string-append slicer-src "/CMake:"
+                                            (or (getenv "CMAKE_MODULE_PATH") ""))))
                    #t))
                
                ;; Patch CMakeLists.txt to ensure EXTENSIONS_DIRBASENAME is defined

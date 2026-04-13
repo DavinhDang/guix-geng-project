@@ -46,6 +46,9 @@
             (string-append "-DCMAKE_SHARED_LINKER_FLAGS=-L"
                            #$(this-package-input "slicer-5.8")
                            "/lib/Slicer-5.8")
+            (string-append "-DSlicerBaseLogic_LIBRARY="
+                           #$(this-package-input "slicer-5.8")
+                           "/lib/Slicer-5.8/libSlicerBaseLogic.so")
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
@@ -66,6 +69,11 @@
                          (assoc-ref inputs "slicer-5.8") "/lib/Slicer-5.8:"
                          (assoc-ref inputs "slicer-5.8") "/lib:"
                          (or (getenv "LD_LIBRARY_PATH") "")))
+                (setenv "LIBRARY_PATH"
+                        (string-append
+                         (assoc-ref inputs "slicer-5.8") "/lib/Slicer-5.8:"
+                         (assoc-ref inputs "slicer-5.8") "/lib:"
+                         (or (getenv "LIBRARY_PATH") "")))
                 #t)))))
     (inputs
       (list slicer-5.8
