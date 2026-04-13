@@ -40,6 +40,12 @@
             (string-append "-DSlicer_LIBRARIES="
                            #$(this-package-input "slicer-5.8")
                            "/lib")
+            (string-append "-DCMAKE_EXE_LINKER_FLAGS=-L"
+                           #$(this-package-input "slicer-5.8")
+                           "/lib/Slicer-5.8")
+            (string-append "-DCMAKE_SHARED_LINKER_FLAGS=-L"
+                           #$(this-package-input "slicer-5.8")
+                           "/lib/Slicer-5.8")
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
@@ -57,6 +63,7 @@
               (lambda* (#:key inputs #:allow-other-keys)
                 (setenv "LD_LIBRARY_PATH"
                         (string-append
+                         (assoc-ref inputs "slicer-5.8") "/lib/Slicer-5.8:"
                          (assoc-ref inputs "slicer-5.8") "/lib:"
                          (or (getenv "LD_LIBRARY_PATH") "")))
                 #t)))))
