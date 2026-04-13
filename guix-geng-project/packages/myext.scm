@@ -37,6 +37,9 @@
             "-DBUILD_TESTING:BOOL=OFF"
             "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
             "-DSlicer_BUILD_CLI:BOOL=OFF"
+            (string-append "-DSlicer_LIBRARIES="
+                           #$(this-package-input "slicer-5.8")
+                           "/lib")
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
@@ -49,6 +52,13 @@
                 (substitute* "CMakeLists.txt"
                   (("include\\(\\$\\{Slicer_EXTENSION_CPACK\\}\\)")
                    "# CPack skipped for Guix packaging"))
+                #t))
+            (add-before 'build 'set-library-path
+              (lambda* (#:key inputs #:allow-other-keys)
+                (setenv "LD_LIBRARY_PATH"
+                        (string-append
+                         (assoc-ref inputs "slicer-5.8") "/lib:"
+                         (or (getenv "LD_LIBRARY_PATH") "")))
                 #t)))))
     (inputs
       (list slicer-5.8
