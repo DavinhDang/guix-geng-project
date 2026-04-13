@@ -49,7 +49,7 @@
                 (substitute* "CMakeLists.txt"
                   (("include\\(\\$\\{Slicer_EXTENSION_CPACK\\}\\)")
                    "# CPack skipped for Guix packaging"))
-                #t))))))
+                #t)))))
     (inputs
       (list slicer-5.8
             python
@@ -62,4 +62,4 @@
     (description
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
     (home-page "https://github.com/DavinhDang/guix-geng-project")
-    (license license:asl2.0))
+    (license license:asl2.0)))
