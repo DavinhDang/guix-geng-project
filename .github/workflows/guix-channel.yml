@@ -5,11 +5,11 @@ name: Guix Channel
 # This verifies that the published channels work correctly.
 
 on:
-  push:
-    branches: [ "main" ]
+  #push:
+    #branches: [ "main" ]
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * 1'
+  #schedule:
+    #- cron: '0 0 * * 1'
 
 jobs:
   build:
