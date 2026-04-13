@@ -214,6 +214,9 @@
                    ;; Set Slicer source dir for FetchContent bypass
                    (setenv "slicersources_SOURCE_DIR"
                            (string-append (getcwd) "/slicersources-src"))
+                   (setenv "CMAKE_MODULE_PATH"
+                           (string-append (getcwd) "/slicersources-src/CMake:"
+                                          (or (getenv "CMAKE_MODULE_PATH") "")))
                    #t))
                
                ;; Patch CMakeLists.txt to ensure EXTENSIONS_DIRBASENAME is defined
