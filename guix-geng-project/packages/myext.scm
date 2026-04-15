@@ -65,7 +65,7 @@
                 (let ((port (open-file "LoadableMVoxMeshGen/CMakeLists.txt" "a")))
                   (display
                    (string-append
-                    "\ntarget_link_libraries(qSlicer${MODULE_NAME}Module "
+                    "\ntarget_link_libraries(qSlicer${MODULE_NAME}Module PUBLIC "
                     (assoc-ref inputs "slicer-5.8")
                     "/lib/Slicer-5.8/libqMRMLWidgets.so)\n")
                    port)
