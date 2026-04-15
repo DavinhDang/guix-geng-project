@@ -37,18 +37,6 @@
             "-DBUILD_TESTING:BOOL=OFF"
             "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
             "-DSlicer_BUILD_CLI:BOOL=OFF"
-            (string-append "-DSlicer_LIBRARIES="
-                           #$(this-package-input "slicer-5.8")
-                           "/lib")
-            (string-append "-DCMAKE_EXE_LINKER_FLAGS=-L"
-                           #$(this-package-input "slicer-5.8")
-                           "/lib/Slicer-5.8")
-            (string-append "-DCMAKE_SHARED_LINKER_FLAGS=-L"
-                           #$(this-package-input "slicer-5.8")
-                           "/lib/Slicer-5.8")
-            (string-append "-DSlicerBaseLogic_LIBRARY="
-                           #$(this-package-input "slicer-5.8")
-                           "/lib/Slicer-5.8/libSlicerBaseLogic.so")
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
@@ -61,6 +49,15 @@
                 (substitute* "CMakeLists.txt"
                   (("include\\(\\$\\{Slicer_EXTENSION_CPACK\\}\\)")
                    "# CPack skipped for Guix packaging"))
+                #t))
+            (add-after 'patch-cpack 'add-slicer-base-logic
+              (lambda* (#:key inputs #:allow-other-keys)
+                (substitute* "LoadableMVoxMeshGen/Logic/CMakeLists.txt"
+                  (("set\\(\\$\\{KIT\\}_TARGET_LIBRARIES\n  \\)")
+                   (string-append
+                    "set(${KIT}_TARGET_LIBRARIES\n  "
+                    (assoc-ref inputs "slicer-5.8")
+                    "/lib/Slicer-5.8/libSlicerBaseLogic.so)")))
                 #t))
             (add-before 'build 'set-library-path
               (lambda* (#:key inputs #:allow-other-keys)
