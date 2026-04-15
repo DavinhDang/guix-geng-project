@@ -52,18 +52,12 @@
                 #t))
               (add-after 'patch-cpack 'add-slicer-base-logic
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let* ((file "LoadableMVoxMeshGen/Logic/CMakeLists.txt")
-                         (content (with-input-from-file file
-                                    (lambda () (read-delimited "" (current-input-port)))))
-                         (new-content (string-replace-substring
-                                       content
-                                       "set(${KIT}_TARGET_LIBRARIES\n  )"
-                                       (string-append
-                                        "set(${KIT}_TARGET_LIBRARIES\n  "
-                                        (assoc-ref inputs "slicer-5.8")
-                                        "/lib/Slicer-5.8/libSlicerBaseLogic.so)"))))
-                    (with-output-to-file file
-                      (lambda () (display new-content))))
+                  (substitute* "LoadableMVoxMeshGen/Logic/CMakeLists.txt"
+                    (("DISABLE_WRAP_PYTHON\n  \\)")
+                     (string-append
+                      "DISABLE_WRAP_PYTHON\n  )\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic PUBLIC "
+                      (assoc-ref inputs "slicer-5.8")
+                      "/lib/Slicer-5.8/libSlicerBaseLogic.so)")))
                   #t))
             (add-before 'build 'set-library-path
               (lambda* (#:key inputs #:allow-other-keys)
