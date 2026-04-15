@@ -20,10 +20,10 @@
         (method git-fetch)
         (uri (git-reference
               (url "https://github.com/DavinhDang/guix-geng-project")
-              (commit "e2a791797ea68ea3386f17223adeb7f1e8576481")))
+              (commit "3cd45e98365d5a754886304d937a0818add3eea7")))
         (file-name (git-file-name name version))
         (sha256
-          (base32 "04wdc98mz90r5xyxi229lf9blbkkimhhmm2s5zwb30mmxyf8zvzf"))))
+          (base32 "04l9d4mky261ixd106v749p25140a0wclrp6xj9xaa7zvnvr96ip"))))
     (build-system cmake-build-system)
     (arguments
       (list
