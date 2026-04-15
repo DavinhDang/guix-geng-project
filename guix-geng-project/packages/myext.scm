@@ -50,21 +50,21 @@
                   (("include\\(\\$\\{Slicer_EXTENSION_CPACK\\}\\)")
                    "# CPack skipped for Guix packaging"))
                 #t))
-            (add-after 'patch-cpack 'add-slicer-base-logic
-              (lambda* (#:key inputs #:allow-other-keys)
-                (let* ((file "LoadableMVoxMeshGen/Logic/CMakeLists.txt")
-                       (content (call-with-input-file file
-                                  (lambda (port) (read-string port))))
-                       (new-content (string-replace-substring
-                                     content
-                                     "set(${KIT}_TARGET_LIBRARIES\n  )"
-                                     (string-append
-                                      "set(${KIT}_TARGET_LIBRARIES\n  "
-                                      (assoc-ref inputs "slicer-5.8")
-                                      "/lib/Slicer-5.8/libSlicerBaseLogic.so)"))))
-                  (call-with-output-file file
-                    (lambda (port) (display new-content port))))
-                #t))
+              (add-after 'patch-cpack 'add-slicer-base-logic
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (let* ((file "LoadableMVoxMeshGen/Logic/CMakeLists.txt")
+                         (content (with-input-from-file file
+                                    (lambda () (read-delimited "" (current-input-port)))))
+                         (new-content (string-replace-substring
+                                       content
+                                       "set(${KIT}_TARGET_LIBRARIES\n  )"
+                                       (string-append
+                                        "set(${KIT}_TARGET_LIBRARIES\n  "
+                                        (assoc-ref inputs "slicer-5.8")
+                                        "/lib/Slicer-5.8/libSlicerBaseLogic.so)"))))
+                    (with-output-to-file file
+                      (lambda () (display new-content))))
+                  #t))
             (add-before 'build 'set-library-path
               (lambda* (#:key inputs #:allow-other-keys)
                 (setenv "LD_LIBRARY_PATH"
