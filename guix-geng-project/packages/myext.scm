@@ -50,15 +50,17 @@
                   (("include\\(\\$\\{Slicer_EXTENSION_CPACK\\}\\)")
                    "# CPack skipped for Guix packaging"))
                 #t))
-              (add-after 'patch-cpack 'add-slicer-base-logic
-                (lambda* (#:key inputs #:allow-other-keys)
-                  (substitute* "LoadableMVoxMeshGen/Logic/CMakeLists.txt"
-                    (("DISABLE_WRAP_PYTHON\n  \\)")
-                     (string-append
-                      "DISABLE_WRAP_PYTHON\n  )\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic PUBLIC "
-                      (assoc-ref inputs "slicer-5.8")
-                      "/lib/Slicer-5.8/libSlicerBaseLogic.so)")))
-                  #t))
+            (add-after 'patch-cpack 'add-slicer-base-logic
+              (lambda* (#:key inputs #:allow-other-keys)
+                (let ((port (open-file "LoadableMVoxMeshGen/Logic/CMakeLists.txt" "a")))
+                  (display
+                   (string-append
+                    "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic PUBLIC "
+                    (assoc-ref inputs "slicer-5.8")
+                    "/lib/Slicer-5.8/libSlicerBaseLogic.so)\n")
+                   port)
+                  (close-port port))
+                #t))
             (add-before 'build 'set-library-path
               (lambda* (#:key inputs #:allow-other-keys)
                 (setenv "LD_LIBRARY_PATH"
