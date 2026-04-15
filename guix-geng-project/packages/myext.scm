@@ -52,12 +52,12 @@
                 #t))
             (add-after 'patch-cpack 'add-slicer-base-logic
               (lambda* (#:key inputs #:allow-other-keys)
-                (substitute* "LoadableMVoxMeshGen/Logic/CMakeLists.txt"
-                  (("TARGET_LIBRARIES\\s*\\)")
-                   (string-append
-                    "TARGET_LIBRARIES\n  "
-                    (assoc-ref inputs "slicer-5.8")
-                    "/lib/Slicer-5.8/libSlicerBaseLogic.so)")))
+                (invoke "sed" "-i"
+                        (string-append
+                         "s|set(${KIT}_TARGET_LIBRARIES|set(${KIT}_TARGET_LIBRARIES\n  "
+                         (assoc-ref inputs "slicer-5.8")
+                         "/lib/Slicer-5.8/libSlicerBaseLogic.so|")
+                        "LoadableMVoxMeshGen/Logic/CMakeLists.txt")
                 #t))
             (add-before 'build 'set-library-path
               (lambda* (#:key inputs #:allow-other-keys)
