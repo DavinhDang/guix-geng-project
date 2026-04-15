@@ -55,7 +55,7 @@
                 (let ((port (open-file "LoadableMVoxMeshGen/Logic/CMakeLists.txt" "a")))
                   (display
                    (string-append
-                    "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic PUBLIC "
+                    "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic "
                     (assoc-ref inputs "slicer-5.8")
                     "/lib/Slicer-5.8/libSlicerBaseLogic.so)\n")
                    port)
