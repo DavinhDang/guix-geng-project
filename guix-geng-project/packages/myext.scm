@@ -52,12 +52,22 @@
                 #t))
             (add-after 'patch-cpack 'add-slicer-base-logic
               (lambda* (#:key inputs #:allow-other-keys)
+                ;; Add SlicerBaseLogic to Logic library
                 (let ((port (open-file "LoadableMVoxMeshGen/Logic/CMakeLists.txt" "a")))
                   (display
                    (string-append
                     "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic "
                     (assoc-ref inputs "slicer-5.8")
                     "/lib/Slicer-5.8/libSlicerBaseLogic.so)\n")
+                   port)
+                  (close-port port))
+                ;; Add qMRMLWidgets to module library
+                (let ((port (open-file "LoadableMVoxMeshGen/CMakeLists.txt" "a")))
+                  (display
+                   (string-append
+                    "\ntarget_link_libraries(qSlicer${MODULE_NAME}Module "
+                    (assoc-ref inputs "slicer-5.8")
+                    "/lib/Slicer-5.8/libqMRMLWidgets.so)\n")
                    port)
                   (close-port port))
                 #t))
