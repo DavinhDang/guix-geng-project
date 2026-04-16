@@ -64,7 +64,7 @@
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
-             (commit "main"))) ; Pin to specific commit in production
+             (commit "f7cbfef818c9e7dfc7d40f809c4910eb866e3211"))) ; Pin to specific commit in production
        (file-name (git-file-name name version))
        (sha256
         (base32 "09n4vbk4rd28lak9khq1yd1sxrqs9rs0ggqwxsnxr2ld9isx70ja"))
