@@ -216,8 +216,11 @@
                           (string-append (assoc-ref inputs "qtbase")
                                         "/lib/cmake/Qt5"))
                    ;; Set Slicer source dir for FetchContent bypass
-                   (let ((slicer-src (call-with-input-file "/tmp/slicer-source-dir"
-                                       (lambda (port) (read-line port)))))
+                   (let ((slicer-src
+                          (if (file-exists? "/tmp/slicer-source-dir")
+                              (call-with-input-file "/tmp/slicer-source-dir"
+                                (lambda (port) (get-line port)))
+                              (string-append (getcwd) "/slicersources-src"))))
                      (setenv "slicersources_SOURCE_DIR" slicer-src)
                      (setenv "CMAKE_MODULE_PATH"
                              (string-append slicer-src "/CMake:"
