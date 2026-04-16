@@ -195,6 +195,12 @@
                    (call-with-output-file "/tmp/slicer-source-dir"
                      (lambda (port)
                        (display (string-append (getcwd) "/slicersources-src") port)))
+                   (substitute* "../source/CMakeLists.txt"
+                     (("if\\(NOT DEFINED slicersources_SOURCE_DIR\\)")
+                      (string-append
+                       "set(slicersources_SOURCE_DIR \""
+                       (getcwd)
+                       "/slicersources-src\")\nif(NOT DEFINED slicersources_SOURCE_DIR)")))
                    #t))
                    
                (add-before 'configure 'set-cmake-paths
