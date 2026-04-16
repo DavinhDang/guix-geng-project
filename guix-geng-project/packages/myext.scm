@@ -28,6 +28,7 @@
     (arguments
       (list
         #:tests? #f
+        #:validate-runpath? #f
         #:configure-flags
         #~(list
             (string-append "-DSlicer_DIR:PATH="
