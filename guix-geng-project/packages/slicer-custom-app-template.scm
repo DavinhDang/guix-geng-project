@@ -124,10 +124,6 @@
               (string-append "-DQt5_DIR:PATH="
                             #$(this-package-input "qtbase")
                             "/lib/cmake/Qt5")
-                            
-              ;; Slicer sources path (avoids FetchContent network call)
-              "-Dslicersources_SOURCE_DIR=$ENV{slicersources_SOURCE_DIR}"
-              "-DCMAKE_MODULE_PATH=$ENV{CMAKE_MODULE_PATH}"
               
               ;; VTK configuration
               "-DSlicer_VTK_VERSION_MAJOR:STRING=9"
