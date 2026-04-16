@@ -183,25 +183,25 @@
                    #t))
                    
                (add-before 'configure 'patch-fetchcontent-slicer
-                 (lambda _
-                   (mkdir-p "slicersources-src")
-                   (invoke "tar" "--strip-components=1" "-xf"
-                           #$(origin
-                               (method url-fetch)
-                               (uri "https://github.com/Slicer/Slicer/archive/0e1b0d5bd12e7fd274ded9799f264d01b6014f1f.tar.gz")
-                               (sha256
-                                (base32 "0ln39yrjp4qr2x8w265359xd8kkav3b6zc5npvidf4z8qi80q4ia")))
-                           "-C" "slicersources-src")
-                   (call-with-output-file "/tmp/slicer-source-dir"
-                     (lambda (port)
-                       (display (string-append (getcwd) "/slicersources-src") port)))
-                   (substitute* "../source/CMakeLists.txt"
-                     (("if\\(NOT DEFINED slicersources_SOURCE_DIR\\)")
-                      (string-append
-                       "set(slicersources_SOURCE_DIR \""
-                       (getcwd)
-                       "/slicersources-src\")\nif(NOT DEFINED slicersources_SOURCE_DIR)")))
-                   #t))
+                  (lambda _
+                    (mkdir-p "slicersources-src")
+                    (invoke "tar" "--strip-components=1" "-xf"
+                            #$(origin
+                                (method url-fetch)
+                                (uri "https://github.com/Slicer/Slicer/archive/0e1b0d5bd12e7fd274ded9799f264d01b6014f1f.tar.gz")
+                                (sha256
+                                 (base32 "0ln39yrjp4qr2x8w265359xd8kkav3b6zc5npvidf4z8qi80q4ia")))
+                            "-C" "slicersources-src")
+                    (call-with-output-file "/tmp/slicer-source-dir"
+                      (lambda (port)
+                        (display (string-append (getcwd) "/slicersources-src") port)))
+                    (substitute* "../source/CMakeLists.txt"
+                      (("if\\(NOT DEFINED slicersources_SOURCE_DIR\\)")
+                       (string-append
+                        "set(slicersources_SOURCE_DIR \""
+                        (getcwd)
+                        "/slicersources-src\")\nif(NOT DEFINED slicersources_SOURCE_DIR)")))
+                    #t))
                    
                (add-before 'configure 'set-cmake-paths
                  (lambda* (#:key inputs #:allow-other-keys)
