@@ -38,6 +38,10 @@
             "-DBUILD_TESTING:BOOL=OFF"
             "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
             "-DSlicer_BUILD_CLI:BOOL=OFF"
+            (string-append "-DCMAKE_INSTALL_RPATH="
+                           "${CMAKE_INSTALL_PREFIX}/lib/Slicer-5.8/qt-loadable-modules")
+            "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
+            "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON"
             (string-append "-DPython3_ROOT_DIR="
                            #$(this-package-input "python")))
         #:phases
