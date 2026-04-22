@@ -67,7 +67,7 @@
              (commit "100ca6e652974688d3a243b6101a91a3ca257364"))) ; Pin to specific commit in production
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0zrx5bdsbsar84z2x2lp6ym64f3r9g0s3f8sz1cw2sa9w40x16cg"))
+        (base32 "0wizz72x1jlg5dri1ih310q1sgf1n08fx4gx4y5ns6wyh2mry8j5"))
        ;; Note: You may need patches for building against system Slicer
        (patches (search-patches
                  ;; Add any patches you need here
