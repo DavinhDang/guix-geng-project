@@ -58,7 +58,7 @@
 (define-public slicer-custom-app-template
   (package
     (name "slicer-custom-app-template")
-    (version "2025.02.11")
+    (version "2025.02.12")
     (source
      (origin
        (method git-fetch)
