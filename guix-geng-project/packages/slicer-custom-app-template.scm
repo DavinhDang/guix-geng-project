@@ -64,10 +64,10 @@
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
-             (commit "f7cbfef818c9e7dfc7d40f809c4910eb866e3211"))) ; Pin to specific commit in production
+             (commit "100ca6e652974688d3a243b6101a91a3ca257364"))) ; Pin to specific commit in production
        (file-name (git-file-name name version))
        (sha256
-        (base32 "09n4vbk4rd28lak9khq1yd1sxrqs9rs0ggqwxsnxr2ld9isx70ja"))
+        (base32 "0zrx5bdsbsar84z2x2lp6ym64f3r9g0s3f8sz1cw2sa9w40x16cg"))
        ;; Note: You may need patches for building against system Slicer
        (patches (search-patches
                  ;; Add any patches you need here
