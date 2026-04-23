@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: guix-geng-project <noreply@example.com>
+Date: Wed, 23 Apr 2026 00:00:00 +0000
+Subject: [PATCH] Fix: use Slicer_MAIN_PROJECT_APPLICATION_NAME for Slicer 5.8 compatibility
+
+Slicer_MAIN_PROJECT_APPLICATION_DISPLAY_NAME was added in a newer Slicer
+version and is not defined in vtkSlicerConfigure.h for Slicer 5.8.1.
+The comment on the include line already names the correct 5.8 define.
+---
+ Applications/SlicerCustomAppTemplateApp/Main.cxx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Applications/SlicerCustomAppTemplateApp/Main.cxx b/Applications/SlicerCustomAppTemplateApp/Main.cxx
+index 1111111..2222222 100644
+--- a/Applications/SlicerCustomAppTemplateApp/Main.cxx
++++ b/Applications/SlicerCustomAppTemplateApp/Main.cxx
+@@ -50,7 +50,7 @@
+   if (!window.isNull())
+     {
+-    QString windowTitle = QString("%1 %2").arg(Slicer_MAIN_PROJECT_APPLICATION_DISPLAY_NAME).arg(Slicer_MAIN_PROJECT_VERSION_FULL);
++    QString windowTitle = QString("%1 %2").arg(Slicer_MAIN_PROJECT_APPLICATION_NAME).arg(Slicer_MAIN_PROJECT_VERSION_FULL);
+     window->setWindowTitle(windowTitle);
+     }
+

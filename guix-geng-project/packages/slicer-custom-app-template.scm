@@ -1,339 +1,153 @@
 ;;
-;; Updated slicer-custom-app-template.scm compatible with slicer.scm
+;; slicer-custom-app-template.scm
+;;
+;; Inherits from systole's slicer-5.8 (all 76+ patches, Python enabled) and
+;; appends the cmake flags needed to build SlicerCustomAppTemplate in place of
+;; the default SlicerApp.  Binary-name-specific phases (patch-runpath,
+;; install-slicer-symlink) are replaced to reference SlicerCustomAppTemplate-real.
 ;;
 
 (define-module (guix-geng-project packages slicer-custom-app-template)
-  #:use-module ((guix licenses)
-                #:prefix license:)
-  #:use-module (gnu packages algebra)
-  #:use-module (gnu packages backup)
-  #:use-module (gnu packages compression)
-  #:use-module (gnu packages fontutils)
-  #:use-module (gnu packages gcc)
-  #:use-module (gnu packages geo)
-  #:use-module (gnu packages gl)
-  #:use-module (gnu packages gnome)
-  #:use-module (gnu packages image)
-  #:use-module (gnu packages libffi)
-  #:use-module (gnu packages maths)
-  #:use-module (gnu packages mpi)
-  #:use-module (gnu packages ninja)
-  #:use-module (gnu packages pdf)
-  #:use-module (gnu packages perl)
-  #:use-module (gnu packages pkg-config)
-  #:use-module (gnu packages python)
-  #:use-module (gnu packages qt)
-  #:use-module (gnu packages serialization)
-  #:use-module (gnu packages tbb)
-  #:use-module (gnu packages tls)
-  #:use-module (gnu packages version-control)
-  #:use-module (gnu packages web)
-  #:use-module (gnu packages xiph)
-  #:use-module (gnu packages xml)
-  #:use-module (gnu packages xorg)
-  #:use-module (gnu packages)
-  #:use-module (guix build utils)
-  #:use-module (guix build-system cmake)
+  #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix download)
   #:use-module (guix git-download)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (systole packages slicer)     ; Updated namespace
-  #:use-module (systole packages ctk)
-  #:use-module (systole packages itk)
-  #:use-module (systole packages libarchive)
-  #:use-module (systole packages maths)
-  #:use-module (systole packages pythonqt)
-  #:use-module (systole packages qrestapi)
-  #:use-module (systole packages teem)
-  #:use-module (systole packages vtk))
+  #:use-module (guix utils)
+  #:use-module (systole packages)        ; sets up %patch-path for slicer-5.8's patches
+  #:use-module (systole packages slicer))
 
-(define slicercustomapputilities-source
+;; SlicerCustomAppTemplate git checkout — provides Applications/, Modules/, etc.
+(define template-source
   (origin
-    (method url-fetch)
-    (uri "https://github.com/KitwareMedical/SlicerCustomAppUtilities/archive/1d984a2c9143e2617ff1ffa9d86c51e07dc6321e.tar.gz")
+    (method git-fetch)
+    (uri (git-reference
+          (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
+          (commit "100ca6e652974688d3a243b6101a91a3ca257364")))
+    (file-name "SlicerCustomAppTemplate-checkout")
     (sha256
-     (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb"))))
+     (base32 "0wizz72x1jlg5dri1ih310q1sgf1n08fx4gx4y5ns6wyh2mry8j5"))
+    (patches
+     (list (local-file "patches/slicer-custom-app-template-fix-main-window.patch")
+           (local-file "patches/slicer-custom-app-template-fix-main-cxx.patch")))))
 
 (define-public slicer-custom-app-template
   (package
+    (inherit slicer-5.8)
     (name "slicer-custom-app-template")
     (version "2025.02.12")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
-             (commit "100ca6e652974688d3a243b6101a91a3ca257364"))) ; Pin to specific commit in production
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0wizz72x1jlg5dri1ih310q1sgf1n08fx4gx4y5ns6wyh2mry8j5"))
-       ;; Note: You may need patches for building against system Slicer
-       (patches (search-patches
-                 ;; Add any patches you need here
-                 ))))
-    (build-system cmake-build-system)
     (arguments
-     (list #:tests? #f  ; Disable tests (requires GUI)
-           #:validate-runpath? #f
-           #:configure-flags
-           #~(list
-              ;; Compiler configuration
-              "-DCMAKE_BUILD_TYPE:STRING=Release"
-              "-DCMAKE_CXX_COMPILER:STRING=g++"
-              "-DCMAKE_C_COMPILER:STRING=gcc"
-              "-DCMAKE_CXX_STANDARD:STRING=17"
+     (substitute-keyword-arguments (package-arguments slicer-5.8)
+       ;; Append custom-app cmake flags on top of all slicer-5.8 flags.
+       ((#:configure-flags flags)
+        #~(append #$flags
+                  (list
+                   ;; Disable application-update support (requires qRestAPI
+                   ;; USE_FILE which is unavailable when EXTENSIONMANAGER is OFF).
+                   "-DSlicer_BUILD_APPLICATIONUPDATE_SUPPORT:BOOL=OFF"
 
-              ;; Compiler flags
-              "-DCMAKE_EXE_LINKER_FLAGS=-pthread"
-              
-              ;; CRITICAL: Disable superbuild, use system Slicer
-              "-DSlicer_SUPERBUILD:BOOL=OFF"
-              
-              ;; Point to the modular slicer-5.8 package
-              (string-append "-DSlicer_DIR:PATH="
-                            #$(this-package-input "slicer-5.8")
-                            "/lib/cmake/Slicer-5.8")
-              
-              ;; Testing disabled
-              "-DBUILD_TESTING:BOOL=OFF"
-              "-DBUILD_SHARED_LIBS:BOOL=ON"
-              
-              ;; Define extensions directory basename
-              "-DSlicer_EXTENSIONS_DIRBASENAME:STRING=Extensions"
-              
-              ;; Extension manager and modules
-              "-DSlicer_BUILD_EXTENSIONMANAGER_SUPPORT:BOOL=OFF"
-              "-DSlicer_DONT_USE_EXTENSION:BOOL=ON"
-              "-DSlicer_REQUIRED_QT_VERSION:STRING=5"
-              
-              ;; CLI modules (optional)
-              "-DSlicer_BUILD_CLI:BOOL=OFF"
-              "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
+                   ;; -------------------------------------------------------
+                   ;; Custom application (SlicerCustomAppTemplate)
+                   ;; -------------------------------------------------------
+                   "-DSlicer_MAIN_PROJECT=SlicerCustomAppTemplateApp"
+                   (string-append "-DSlicer_APPLICATIONS_DIR="
+                                  #$template-source "/Applications")
+                   ;; Referenced in slicer-application-properties.cmake for the
+                   ;; LICENSE path.
+                   (string-append "-DSlicerCustomAppTemplate_SOURCE_DIR="
+                                  #$template-source)
 
-              ;; Qt loadable modules
-              "-DSlicer_BUILD_QTLOADABLEMODULES:BOOL=ON"
-              "-DSlicer_BUILD_QTSCRIPTEDMODULES:BOOL=OFF"
-              "-DSlicer_BUILD_QT_DESIGNER_PLUGINS:BOOL=OFF"
-              "-DSlicer_USE_QtTesting:BOOL=OFF"
-              "-DSlicer_USE_SlicerITK:BOOL=ON"
-              "-DSlicer_USE_CTKAPPLAUNCHER:BOOL=ON"
-              "-DSlicer_BUILD_WEBENGINE_SUPPORT:BOOL=OFF"
-              
-              ;; Qt5 path
-              (string-append "-DQt5_DIR:PATH="
-                            #$(this-package-input "qtbase")
-                            "/lib/cmake/Qt5")
-              
-              ;; VTK configuration
-              "-DSlicer_VTK_VERSION_MAJOR:STRING=9"
-              "-DSlicer_BUILD_vtkAddon:BOOL=OFF"
+                   ;; Extension source dirs: Python scripted modules only.
+                   ;; LoadableMVoxMeshGen is a C++ loadable module — it must be
+                   ;; built after install via find_package(Slicer) (like myext).
+                   ;; slicerMacroBuildLoadableModule is only in UseSlicer.cmake
+                   ;; (post-install path), never in the main build cmake context.
+                   (string-append "-DSlicer_EXTENSION_SOURCE_DIRS="
+                                  #$template-source "/Modules/Scripted/Home;"
+                                  (getcwd) "/SlicerCustomAppUtilities/Modules/Scripted/SlicerCustomAppUtilities")
 
-              ;; Development files
-              "-DSlicer_INSTALL_DEVELOPMENT:BOOL=ON"
-              "-DSlicer_USE_TBB:BOOL=ON"
+                   ;; App metadata
+                   "-DSlicer_ORGANIZATION_DOMAIN=kitware.com"
+                   "-DSlicer_ORGANIZATION_NAME=Kitware, Inc."
+                   "-DSlicer_DEFAULT_HOME_MODULE=Home"
+                   "-DSlicer_DEFAULT_FAVORITE_MODULES=Data, Volumes, Models, Transforms, Markups, SegmentEditor"
 
-              ;; DICOM support (disabled by default)
-              "-DSlicer_BUILD_DICOM_SUPPORT:BOOL=OFF"
+                   ;; Module enable/disable lists (from template CMakeLists.txt)
+                   "-DSlicer_CLIMODULES_ENABLED=ResampleDTIVolume;ResampleScalarVectorDWIVolume"
+                   "-DSlicer_QTLOADABLEMODULES_DISABLED=SceneViews;SlicerWelcome;ViewControllers"
+                   "-DSlicer_QTSCRIPTEDMODULES_DISABLED=DataProbe;DMRIInstall;Endoscopy;LabelStatistics;PerformanceTests;SampleData;VectorToScalarVolume")))
 
-              ;; Python (disabled for minimal build)
-              "-DVTK_WRAP_PYTHON:BOOL=OFF"
-              "-DSlicer_USE_PYTHONQT:BOOL=OFF"
-              "-DSlicer_USE_SYSTEM_python:BOOL=OFF"
+       ((#:phases phases)
+        #~(modify-phases #$phases
+            ;; Extract SlicerCustomAppUtilities before configure so that
+            ;; (getcwd)/SlicerCustomAppUtilities resolves correctly in the
+            ;; configure-flags above.
+            (add-before 'configure 'extract-slicercustomapputilities
+              (lambda _
+                (mkdir-p "../SlicerCustomAppUtilities")
+                (invoke "tar" "--strip-components=1" "-xf"
+                        #$(origin
+                            (method url-fetch)
+                            (uri "https://github.com/KitwareMedical/SlicerCustomAppUtilities/archive/1d984a2c9143e2617ff1ffa9d86c51e07dc6321e.tar.gz")
+                            (sha256
+                             (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb")))
+                        "-C" "../SlicerCustomAppUtilities")
+                #t))
 
-              ;; Use system libraries (must match Slicer's configuration)
-              "-DSlicer_USE_SYSTEM_bzip2:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_CTK:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_TBB:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_teem:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_QT:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_curl:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_DCMTK:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_ITK:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_LibArchive:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_LibFFI:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_LZMA:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_RapidJSON:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_sqlite:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_VTK:BOOL=ON"
-              "-DSlicer_USE_SYSTEM_zlib:BOOL=ON"
+            ;; The custom app installs libs to lib/SlicerCustomAppTemplate-5.8/,
+            ;; not lib/Slicer-5.8/, so every inherited phase that hardcodes the
+            ;; Slicer-5.8 path must be replaced.
 
-              ;; Version info
-              "-DSlicer_WC_LAST_CHANGED_DATE:STRING=2025-2-12 10:00:00 +0000")
-           
-           #:out-of-source? #t
-           
-           #:phases
-           #~(modify-phases %standard-phases
-               (add-before 'configure 'patch-fetchcontent-utilities
-                 (lambda* (#:key build-dir #:allow-other-keys)
-                   ;; Extract pre-fetched source
-                   (mkdir-p "SlicerCustomAppUtilities")
-                   (invoke "tar" "--strip-components=1" "-xf"
-                           #$(origin
-                               (method url-fetch)
-                               (uri "https://github.com/KitwareMedical/SlicerCustomAppUtilities/archive/1d984a2c9143e2617ff1ffa9d86c51e07dc6321e.tar.gz")
-                               (sha256
-                                (base32 "1qyzfsdz64pkd87iixjkiqasxxqsdiwpxpca7nsnszs6yr3aswkb")))
-                           "-C" "SlicerCustomAppUtilities")
-                   ;; Use sed for reliable multiline replacement
-                   (invoke "sed" "-i"
-                          "/FetchContent_Populate(${extension_name}/,/^  )/c\\# FetchContent skipped by Guix"
-                          "../source/CMakeLists.txt")
-                   #t))
-                   
-               (add-before 'configure 'patch-fetchcontent-slicer
-                  (lambda _
-                    (mkdir-p "slicersources-src")
-                    (invoke "tar" "--strip-components=1" "-xf"
-                            #$(origin
-                                (method url-fetch)
-                                (uri "https://github.com/Slicer/Slicer/archive/0e1b0d5bd12e7fd274ded9799f264d01b6014f1f.tar.gz")
-                                (sha256
-                                 (base32 "0ln39yrjp4qr2x8w265359xd8kkav3b6zc5npvidf4z8qi80q4ia")))
-                            "-C" "slicersources-src")
-                    (call-with-output-file "/tmp/slicer-source-dir"
-                      (lambda (port)
-                        (display (string-append (getcwd) "/slicersources-src") port)))
-                    (mkdir-p "slicersources-subbuild")
-                    (substitute* "../source/CMakeLists.txt"
-                      (("if\\(NOT DEFINED slicersources_SOURCE_DIR\\)")
-                       (string-append
-                        "set(slicersources_SOURCE_DIR \""
-                        (getcwd)
-                        "/slicersources-src\")\n"
-                        "set(slicersources_BINARY_DIR \""
-                        (getcwd)
-                        "/slicersources-subbuild\")\n"
-                        "if(NOT DEFINED slicersources_SOURCE_DIR)")))
-                    #t))
-                   
-               (add-before 'configure 'set-cmake-paths
-                 (lambda* (#:key inputs #:allow-other-keys)
-                   ;; Make dependencies discoverable by CMake
-                   (setenv "CMAKE_PREFIX_PATH"
-                          (string-append 
-                            (assoc-ref inputs "vtkaddon") "/lib/cmake:"
-                            (assoc-ref inputs "slicer-5.8") "/lib/cmake:"
-                            (assoc-ref inputs "qtbase") "/lib/cmake:"
-                            (or (getenv "CMAKE_PREFIX_PATH") "")))
-                   
-                   ;; Also set Qt5_DIR explicitly
-                   (setenv "Qt5_DIR"
-                          (string-append (assoc-ref inputs "qtbase")
-                                        "/lib/cmake/Qt5"))
-                   ;; Set Slicer source dir for FetchContent bypass
-                   (let ((slicer-src (string-append (getcwd) "/slicersources-src")))
-                     (setenv "slicersources_SOURCE_DIR" slicer-src)
-                     (setenv "CMAKE_MODULE_PATH"
-                             (string-append slicer-src "/CMake:"
-                                            (or (getenv "CMAKE_MODULE_PATH") ""))))
-                   #t))
-               
-               ;; Patch CMakeLists.txt to ensure EXTENSIONS_DIRBASENAME is defined
-               (add-after 'unpack 'fix-extensions-dirbasename
-                 (lambda _
-                   (substitute* "CMakeLists.txt"
-                     (("set\\(extension_defaults_file.*")
-                      (string-append
-                       "set(extension_defaults_file \"${CMAKE_CURRENT_SOURCE_DIR}/SlicerDefaultExtensions.cmake\")
-if(EXISTS \"${extension_defaults_file}\")
-  include(\"${extension_defaults_file}\")
-endif()
+            ;; Our binary is SlicerCustomAppTemplate-real, not SlicerApp-real.
+            (replace 'patch-runpath
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let* ((out (assoc-ref outputs "out"))
+                       (bin (string-append out "/bin/SlicerCustomAppTemplateApp-real")))
+                  (when (file-exists? bin)
+                    (invoke "patchelf" "--add-rpath"
+                            (string-append "$ORIGIN/../lib/SlicerCustomAppTemplate-5.8"
+                                           ":"
+                                           "$ORIGIN/../lib/SlicerCustomAppTemplate-5.8/qt-loadable-modules")
+                            bin)))
+                #t))
 
-# Ensure Slicer_EXTENSIONS_DIRBASENAME is defined for non-superbuild
-if(NOT DEFINED Slicer_EXTENSIONS_DIRBASENAME)
-  set(Slicer_EXTENSIONS_DIRBASENAME \"Extensions\")
-endif()
-")))
-                   #t))
+            ;; Install a bin/SlicerCustomAppTemplate wrapper instead of bin/Slicer.
+            (replace 'install-slicer-symlink
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let* ((out (assoc-ref outputs "out"))
+                       (wrapper (string-append out "/bin/SlicerCustomAppTemplate")))
+                  (when (file-exists? wrapper)
+                    (delete-file wrapper))
+                  (call-with-output-file wrapper
+                    (lambda (port)
+                      (display "#!/bin/sh\n" port)
+                      (display "export PIP_USER=1\n" port)
+                      (display "_dir=\"$(dirname \"$(readlink -f \"$0\")\")\"\n" port)
+                      (display "exec \"$_dir/SlicerCustomAppTemplateApp-real\" \"$@\"\n" port)))
+                  (chmod wrapper #o755))
+                #t))
 
-               (add-after 'install 'wrap
-                 (lambda* (#:key outputs #:allow-other-keys)
-                   (let* ((out (assoc-ref outputs "out"))
-                          ;; App name depends on cookiecutter template
-                          (app-launcher (string-append out "/bin/SlicerCustomAppTemplate"))
-                          (app-wrapper (string-append out "/bin/SlicerCustomAppTemplate-real")))
-                     ;; Only wrap if launcher exists
-                     (when (file-exists? app-launcher)
-                       ;; Rename original launcher
-                       (rename-file app-launcher app-wrapper)
-                       ;; Create new wrapper
-                       (call-with-output-file app-launcher
-                         (lambda (port)
-                           (format port "#!/bin/bash
-export LD_LIBRARY_PATH=\"~a/lib/Slicer-5.8/qt-loadable-modules${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"
-export QT_PLUGIN_PATH=\"~a/lib/qt5/plugins${QT_PLUGIN_PATH:+:$QT_PLUGIN_PATH}\"
-exec ~a \"$@\"
-"
-                                   (assoc-ref outputs "slicer-5.8")
-                                   (assoc-ref outputs "qtbase")
-                                   app-wrapper)))
-                       ;; Make wrapper executable
-                       (chmod app-launcher #o755))
-                     #t))))))
-    
-    (inputs
-     (list libxt
-           eigen
-           expat
-           openssl-3.0
-           git
-           hdf5-1.10
-           libffi
-           libjpeg-turbo
-           libxinerama
-           mesa
-           rapidjson
-           tbb
+            ;; Patch .so rpath for Python extensions in lib/SlicerCustomAppTemplate-5.8/.
+            (replace 'patch-python-extension-runpath
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let ((dir (string-append (assoc-ref outputs "out")
+                                          "/lib/SlicerCustomAppTemplate-5.8")))
+                  (for-each
+                   (lambda (lib) (invoke "patchelf" "--add-rpath" "$ORIGIN" lib))
+                   (find-files dir
+                     (lambda (f stat)
+                       (let ((rel (string-drop f (1+ (string-length dir)))))
+                         (and (string-suffix? ".so" rel)
+                              (not (string-contains rel "/"))))))))))
 
-           ;; Qt5
-           qtbase-5
-           qtmultimedia-5
-           qtxmlpatterns-5
-           qtdeclarative-5
-           qtsvg-5
-           qtx11extras
-           qtwebchannel-5
-           qttools-5
+            ;; Symlink vtkAddonPython.so into lib/SlicerCustomAppTemplate-5.8/.
+            (replace 'link-vtkaddon-python
+              (lambda* (#:key inputs outputs #:allow-other-keys)
+                (symlink
+                 (string-append (assoc-ref inputs "vtkaddon")
+                                "/lib/vtkAddonPython.so")
+                 (string-append (assoc-ref outputs "out")
+                                "/lib/SlicerCustomAppTemplate-5.8/vtkAddonPython.so"))))))))
 
-           ;; VTK
-           vtk-slicer
-           double-conversion
-           freetype
-           gl2ps
-           glew
-           jsoncpp
-           libharu
-           libtheora
-           libxml++
-           lz4
-           mpich
-           netcdf
-           proj
-
-           ;; Slicer and related modules
-           ;; KEY CHANGE: Use slicer-5.8 from the modular package
-           slicer-5.8
-           ctk
-           ctkapplauncher
-           itk-slicer
-           libarchive-slicer
-           teem-slicer
-           vtkaddon
-           qrestapi))
-    
-    (native-inputs (list pkg-config))
-    
-    (synopsis "Template for creating custom 3D Slicer applications")
-    (description
-     "SlicerCustomAppTemplate is a cookiecutter-based template for creating
-custom 3D Slicer applications.  This package builds the custom application
-using the system-provided Slicer installation.
-
-This package is configured to build against the modular slicer-5.8 package,
-which provides better support for custom application development with enhanced
-CMake configuration and development file installation.")
-    
     (home-page "https://github.com/DavinhDang/SlicerCustomAppTemplate")
     (license license:asl2.0)))

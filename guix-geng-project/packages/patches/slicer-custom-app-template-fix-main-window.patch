@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: guix-geng-project <noreply@example.com>
+Date: Wed, 23 Apr 2026 00:00:00 +0000
+Subject: [PATCH] Fix: use applicationDisplayName() for Slicer 5.8 compatibility
+
+mainApplicationDisplayName() was added in a newer Slicer version and is not
+present in Slicer 5.8.1.  Fall back to the standard Qt
+QCoreApplication::applicationDisplayName() which qSlicerApplication inherits.
+---
+ Applications/SlicerCustomAppTemplateApp/qSlicerCustomAppTemplateAppMainWindow.cxx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Applications/SlicerCustomAppTemplateApp/qSlicerCustomAppTemplateAppMainWindow.cxx b/Applications/SlicerCustomAppTemplateApp/qSlicerCustomAppTemplateAppMainWindow.cxx
+index 1111111..2222222 100644
+--- a/Applications/SlicerCustomAppTemplateApp/qSlicerCustomAppTemplateAppMainWindow.cxx
++++ b/Applications/SlicerCustomAppTemplateApp/qSlicerCustomAppTemplateAppMainWindow.cxx
+@@ -63,7 +63,7 @@
+   //----------------------------------------------------------------------------
+   QAction* helpAboutSlicerAppAction = new QAction(mainWindow);
+   helpAboutSlicerAppAction->setObjectName("HelpAboutSlicerCustomAppTemplateAppAction");
+-  helpAboutSlicerAppAction->setText(qSlicerCustomAppTemplateAppMainWindow::tr("About %1").arg(qSlicerApplication::application()->mainApplicationDisplayName()));
++  helpAboutSlicerAppAction->setText(qSlicerCustomAppTemplateAppMainWindow::tr("About %1").arg(qSlicerApplication::application()->applicationDisplayName()));
+
+   //----------------------------------------------------------------------------
+   // Calling "setupUi()" after adding the actions above allows the call
