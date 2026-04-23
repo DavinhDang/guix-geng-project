@@ -1,7 +1,7 @@
 # guix-geng-project
 MPE Research Project for Guix
 
-Channels.scm used:
+## Channels.scm used:
 ```
 (list (channel
 	(name 'guix)
@@ -20,4 +20,23 @@ Channels.scm used:
         (name 'guix-geng-project)
         (url "https://github.com/DavinhDang/guix-geng-project.git")
         (branch "main")))
+```
+
+## Installing custom extension package - myext
+`myext` is a Guix package that builds and installs `LoadableMVoxMeshGen`, a Slicer C++ loadable module version of mvox.
+</br>
+To install:
+```
+guix pull
+guix install myext
+```
+To load the module in Slicer:
+```
+Slicer --additional-module-paths \
+  $(guix package --list-installed | grep myext | awk '{print $4}')/lib/Slicer-5.8/qt-loadable-modules
+```
+What gets installed:
+```
+<store>/myext-0.1/lib/Slicer-5.8/qt-loadable-modules/libqSlicerLoadableMVoxMeshGenModule.so
+<store>/myext-0.1/lib/Slicer-5.8/qt-loadable-modules/libvtkSlicerLoadableMVoxMeshGenModuleLogic.so
 ```
