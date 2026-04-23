@@ -1,5 +1,5 @@
-# guix-geng-project
-MPE Research Project for Guix
+# Evaluating GNU Guix as a Secure and Reproducible Operating System for Software as a Medical Device
+MPE Research Project 2025-2026
 
 ## Channels.scm used:
 ```
