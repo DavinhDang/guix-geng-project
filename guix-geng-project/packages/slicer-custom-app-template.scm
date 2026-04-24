@@ -13,6 +13,7 @@
   #:use-module (guix git-download)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix search-paths)
   #:use-module (guix utils)
   #:use-module (systole packages)        ; sets up %patch-path for slicer-5.8's patches
   #:use-module (systole packages slicer))
@@ -148,6 +149,32 @@
                                 "/lib/vtkAddonPython.so")
                  (string-append (assoc-ref outputs "out")
                                 "/lib/SlicerCustomAppTemplate-5.8/vtkAddonPython.so"))))))))
+
+    ;; The inherited native-search-paths from slicer-5.8 hardcode lib/Slicer-5.8/.
+    ;; Override them to point at lib/SlicerCustomAppTemplate-5.8/ instead so that
+    ;; PYTHONPATH and SLICER_ADDITIONAL_MODULE_PATHS are set correctly in any
+    ;; profile that includes this package.
+    (native-search-paths
+     (list
+      (search-path-specification
+       (variable "CMAKE_PREFIX_PATH")
+       (files '("")))
+      (search-path-specification
+       (variable "SLICER_ADDITIONAL_MODULE_PATHS")
+       (files '("lib/SlicerCustomAppTemplate-5.8/qt-loadable-modules"
+                "lib/SlicerCustomAppTemplate-5.8/qt-scripted-modules"
+                "lib/SlicerCustomAppTemplate-5.8/cli-modules")))
+      (search-path-specification
+       (variable "SLICER_PYTHONPATH")
+       (files '("bin/Python"
+                "lib/SlicerCustomAppTemplate-5.8"
+                "lib/python3.11/site-packages")))
+      (search-path-specification
+       (variable "PYTHONPATH")
+       (files '("bin/Python"
+                "lib/SlicerCustomAppTemplate-5.8"
+                "lib/SlicerCustomAppTemplate-5.8/qt-loadable-modules"
+                "lib/python3.11/site-packages")))))
 
     (home-page "https://github.com/DavinhDang/SlicerCustomAppTemplate")
     (license license:asl2.0)))
