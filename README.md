@@ -4,9 +4,9 @@ MPE Research Project 2025-2026
 ## Channels.scm used:
 ```
 (list (channel
-	(name 'guix)
-	(url "https://git.guix.gnu.org/guix.git")
-	(commit "ba516ec"))
+		(name 'guix)
+		(url "https://git.guix.gnu.org/guix.git")
+		(commit "ba516ec"))
       (channel
         (name 'systole)
         (url "https://github.com/SystoleOS/guix-systole.git")
@@ -19,7 +19,15 @@ MPE Research Project 2025-2026
       (channel
         (name 'guix-geng-project)
         (url "https://github.com/DavinhDang/guix-geng-project.git")
-        (branch "main")))
+        (branch "main"))
+	  (channel
+		(name 'slicer-cbm)
+		(url "https://github.com/SlicerCBM/Guix-SlicerCBM.git")
+		(branch "main"))
+	  (channel
+		(name 'explicitsim)
+		(url "https://github.com/benzwick/guix-explicitsim")
+		(branch "main")))
 ```
 
 ## Installing custom extension package - myext
