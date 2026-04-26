@@ -9,11 +9,17 @@
   #:use-module (guix git-download)
   #:use-module (guix build-system cmake)
   #:use-module (guix gexp)
+  #:use-module (guix-geng-project packages slicer-custom-app-template)
   #:use-module (systole packages slicer))
 
-(define-public myext
+(define (make-myext slicer lib-subdir)
+  "Build the LoadableMVoxMeshGen extension against SLICER.
+LIB-SUBDIR is the Slicer lib directory name, e.g. \"Slicer-5.8\" or
+\"SlicerCustomAppTemplate-5.8\"."
   (package
-    (name "myext")
+    (name (if (equal? lib-subdir "Slicer-5.8")
+              "myext"
+              "myext-custom-app"))
     (version "0.1")
     (source
       (origin
@@ -32,7 +38,7 @@
         #:configure-flags
         #~(list
             (string-append "-DSlicer_DIR:PATH="
-                           #$(this-package-input "slicer-5.8")
+                           #$slicer
                            "/lib/cmake/Slicer-5.8")
             "-DSlicer_SUPERBUILD:BOOL=OFF"
             "-DBUILD_TESTING:BOOL=OFF"
@@ -40,7 +46,7 @@
             "-DSlicer_BUILD_CLI:BOOL=OFF"
             (string-append "-DCMAKE_INSTALL_RPATH="
                            #$output
-                           "/lib/Slicer-5.8/qt-loadable-modules")
+                           "/lib/" #$lib-subdir "/qt-loadable-modules")
             "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
             "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON"
             (string-append "-DPython3_ROOT_DIR="
@@ -57,41 +63,39 @@
                    "# CPack skipped for Guix packaging"))
                 #t))
             (add-after 'patch-cpack 'add-slicer-base-logic
-              (lambda* (#:key inputs #:allow-other-keys)
-                ;; Add SlicerBaseLogic to Logic library
-                (let ((port (open-file "LoadableMVoxMeshGen/Logic/CMakeLists.txt" "a")))
-                  (display
-                   (string-append
-                    "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic "
-                    (assoc-ref inputs "slicer-5.8")
-                    "/lib/Slicer-5.8/libSlicerBaseLogic.so)\n")
-                   port)
-                  (close-port port))
-                ;; Add qMRMLWidgets to module library
-                (let ((port (open-file "LoadableMVoxMeshGen/CMakeLists.txt" "a")))
-                  (display
-                   (string-append
-                    "\ntarget_link_libraries(qSlicer${MODULE_NAME}Module PUBLIC "
-                    (assoc-ref inputs "slicer-5.8")
-                    "/lib/Slicer-5.8/libqMRMLWidgets.so)\n")
-                   port)
-                  (close-port port))
+              (lambda _
+                (let ((slicer-lib (string-append #$slicer "/lib/" #$lib-subdir "/")))
+                  (let ((port (open-file "LoadableMVoxMeshGen/Logic/CMakeLists.txt" "a")))
+                    (display
+                     (string-append
+                      "\ntarget_link_libraries(vtkSlicer${MODULE_NAME}ModuleLogic "
+                      slicer-lib "libSlicerBaseLogic.so)\n")
+                     port)
+                    (close-port port))
+                  (let ((port (open-file "LoadableMVoxMeshGen/CMakeLists.txt" "a")))
+                    (display
+                     (string-append
+                      "\ntarget_link_libraries(qSlicer${MODULE_NAME}Module PUBLIC "
+                      slicer-lib "libqMRMLWidgets.so)\n")
+                     port)
+                    (close-port port)))
                 #t))
             (add-before 'build 'set-library-path
-              (lambda* (#:key inputs #:allow-other-keys)
-                (setenv "LD_LIBRARY_PATH"
-                        (string-append
-                         (assoc-ref inputs "slicer-5.8") "/lib/Slicer-5.8:"
-                         (assoc-ref inputs "slicer-5.8") "/lib:"
-                         (or (getenv "LD_LIBRARY_PATH") "")))
-                (setenv "LIBRARY_PATH"
-                        (string-append
-                         (assoc-ref inputs "slicer-5.8") "/lib/Slicer-5.8:"
-                         (assoc-ref inputs "slicer-5.8") "/lib:"
-                         (or (getenv "LIBRARY_PATH") "")))
+              (lambda _
+                (let ((slicer-lib (string-append #$slicer "/lib/" #$lib-subdir)))
+                  (setenv "LD_LIBRARY_PATH"
+                          (string-append
+                           slicer-lib ":"
+                           #$slicer "/lib:"
+                           (or (getenv "LD_LIBRARY_PATH") "")))
+                  (setenv "LIBRARY_PATH"
+                          (string-append
+                           slicer-lib ":"
+                           #$slicer "/lib:"
+                           (or (getenv "LIBRARY_PATH") ""))))
                 #t)))))
     (inputs
-      (list slicer-5.8
+      (list slicer
             python
             libpng
             expat
@@ -103,3 +107,9 @@
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
     (home-page "https://github.com/DavinhDang/guix-geng-project")
     (license license:asl2.0)))
+
+(define-public myext
+  (make-myext slicer-5.8 "Slicer-5.8"))
+
+(define-public myext-custom-app
+  (make-myext slicer-custom-app-template "SlicerCustomAppTemplate-5.8"))
