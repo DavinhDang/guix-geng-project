@@ -174,6 +174,7 @@
        (files '("bin/Python"
                 "lib/SlicerCustomAppTemplate-5.8"
                 "lib/SlicerCustomAppTemplate-5.8/qt-loadable-modules"
+                "lib/SlicerCustomAppTemplate-5.8/qt-scripted-modules"
                 "lib/python3.11/site-packages")))))
 
     (home-page "https://github.com/DavinhDang/SlicerCustomAppTemplate")
