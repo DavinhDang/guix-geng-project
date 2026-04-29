@@ -151,4 +151,4 @@ Note: This package generates the template for custom apps.  To build and
 install a specific custom Slicer application, you'll need to create a
 separate package definition for that app.")
     (home-page "https://github.com/KitwareMedical/SlicerCustomAppTemplate")
-    (license license:asl2.0)))
+    (license license:bsd-3)))

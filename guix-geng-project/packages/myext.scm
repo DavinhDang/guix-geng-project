@@ -106,7 +106,7 @@ LIB-SUBDIR is the Slicer lib directory name, e.g. \"Slicer-5.8\" or
     (description
      "A 3D Slicer loadable module extension providing MVox mesh generation.")
     (home-page "https://github.com/DavinhDang/guix-geng-project")
-    (license license:asl2.0)))
+    (license license:bsd-3)))
 
 (define-public myext
   (make-myext slicer-5.8 "Slicer-5.8"))

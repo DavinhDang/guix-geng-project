@@ -178,4 +178,4 @@
                 "lib/python3.11/site-packages")))))
 
     (home-page "https://github.com/DavinhDang/SlicerCustomAppTemplate")
-    (license license:asl2.0)))
+    (license license:bsd-3)))
