@@ -24,10 +24,10 @@
     (method git-fetch)
     (uri (git-reference
           (url "https://github.com/DavinhDang/SlicerCustomAppTemplate")
-          (commit "100ca6e652974688d3a243b6101a91a3ca257364")))
+          (commit "01777b409a9d7ef0f19d12604024de286b10697b")))
     (file-name "SlicerCustomAppTemplate-checkout")
     (sha256
-     (base32 "0wizz72x1jlg5dri1ih310q1sgf1n08fx4gx4y5ns6wyh2mry8j5"))
+     (base32 "0hx0cn67ksy1825jag2wixbnfm9z752ngs39ahwpcrc1cv94bm0j"))
     (patches
      (list (local-file "patches/slicer-custom-app-template-fix-main-window.patch")
            (local-file "patches/slicer-custom-app-template-fix-main-cxx.patch")))))
