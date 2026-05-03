@@ -76,7 +76,8 @@
                    ;; Module enable/disable lists (from template CMakeLists.txt)
                    "-DSlicer_CLIMODULES_ENABLED=ResampleDTIVolume;ResampleScalarVectorDWIVolume"
                    "-DSlicer_QTLOADABLEMODULES_DISABLED=SceneViews;SlicerWelcome;ViewControllers"
-                   "-DSlicer_QTSCRIPTEDMODULES_DISABLED=DataProbe;DMRIInstall;Endoscopy;LabelStatistics;PerformanceTests;SampleData;VectorToScalarVolume")))
+                   "-DSlicer_BUILD_DIFFUSION_SUPPORT:BOOL=ON"
+                   "-DSlicer_QTSCRIPTEDMODULES_DISABLED=DataProbe;Endoscopy;LabelStatistics;PerformanceTests;SampleData;VectorToScalarVolume")))
 
        ((#:phases phases)
         #~(modify-phases #$phases
