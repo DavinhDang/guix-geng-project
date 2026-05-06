@@ -39,7 +39,7 @@ LIB-SUBDIR is the Slicer lib directory name, e.g. \"Slicer-5.8\" or
         #~(list
             (string-append "-DSlicer_DIR:PATH="
                            #$slicer
-                           "/lib/cmake/Slicer-5.8")
+                           "/lib/" #$lib-subdir)
             "-DSlicer_SUPERBUILD:BOOL=OFF"
             "-DBUILD_TESTING:BOOL=OFF"
             "-DSlicer_BUILD_CLI_SUPPORT:BOOL=OFF"
