@@ -296,11 +296,11 @@
       (string-append
        "-DqSlicerTerminologiesModuleWidgets_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
       (string-append
        "-DvtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-terminologies-custom-app
@@ -321,11 +321,11 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -346,11 +346,11 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -389,11 +389,11 @@
       (string-append
        "-DvtkSlicerCamerasModuleLogic_INCLUDE_DIRS="
        #$slicer-cameras-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerCamerasModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerCamerasModuleLogic")
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-cameras-custom-app
@@ -416,23 +416,23 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DvtkSlicerColorsModuleLogic_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
       (string-append
        "-DvtkSlicerColorsModuleMRML_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
       (string-append
        "-DqSlicerColorsModuleWidgets_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -457,31 +457,31 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DqSlicerTerminologiesModuleWidgets_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
       (string-append
        "-DvtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
       (string-append
        "-DqSlicerColorsModuleWidgets_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
       (string-append
        "-DvtkSlicerColorsModuleLogic_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
       (string-append
        "-DvtkSlicerColorsModuleMRML_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -510,39 +510,39 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DqSlicerTerminologiesModuleWidgets_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
       (string-append
        "-DvtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
       (string-append
        "-DvtkSlicerColorsModuleLogic_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleLogic")
       (string-append
        "-DvtkSlicerColorsModuleMRML_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerColorsModuleMRML")
       (string-append
        "-DqSlicerColorsModuleWidgets_INCLUDE_DIRS="
        #$slicer-colors-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerColorsModuleWidgets")
       (string-append
        "-DvtkSlicerAnnotationsModuleMRML_INCLUDE_DIRS="
        #$slicer-annotations-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerAnnotationsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerAnnotationsModuleMRML")
       (string-append
        "-DvtkSlicerAnnotationsModuleLogic_INCLUDE_DIRS="
        #$slicer-annotations-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerAnnotationsModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerAnnotationsModuleLogic")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -570,15 +570,15 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DvtkSlicerMarkupsModuleMRML_INCLUDE_DIRS="
        #$slicer-markups-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerMarkupsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerMarkupsModuleMRML")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
@@ -603,23 +603,23 @@
       (string-append
        "-DqSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerSubjectHierarchyModuleWidgets")
       (string-append
        "-DvtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS="
        #$slicer-subjecthierarchy-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerSubjectHierarchyModuleLogic")
       (string-append
        "-DqSlicerTerminologiesModuleWidgets_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
+       "/include/Slicer-5.8/qt-loadable-modules/qSlicerTerminologiesModuleWidgets")
       (string-append
        "-DvtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS="
        #$slicer-terminologies-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerTerminologiesModuleLogic")
       (string-append
        "-DvtkSlicerMarkupsModuleMRML_INCLUDE_DIRS="
        #$slicer-markups-custom-app
-       "/include/SlicerCustomAppTemplate-5.8/qt-loadable-modules/vtkSlicerMarkupsModuleMRML")
+       "/include/Slicer-5.8/qt-loadable-modules/vtkSlicerMarkupsModuleMRML")
       (string-append
        "-DEXTRA_MODULE_LIB_DIRS="
        #$slicer-subjecthierarchy-custom-app
