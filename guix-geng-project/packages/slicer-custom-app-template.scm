@@ -114,6 +114,10 @@
                 #t))
 
             ;; Install a bin/SlicerCustomAppTemplate wrapper instead of bin/Slicer.
+            ;; Pre-populate LD_LIBRARY_PATH from SLICER_ADDITIONAL_MODULE_PATHS so
+            ;; that module .so files are found before Slicer's dlopen calls (glibc
+            ;; caches LD_LIBRARY_PATH at process start; setting it after exec is too
+            ;; late).  Also include $GUIX_ENVIRONMENT's qt-loadable-modules when set.
             (replace 'install-slicer-symlink
               (lambda* (#:key outputs #:allow-other-keys)
                 (let* ((out (assoc-ref outputs "out"))
@@ -123,6 +127,18 @@
                   (call-with-output-file wrapper
                     (lambda (port)
                       (display "#!/bin/sh\n" port)
+                      (display "IFS=:\n" port)
+                      (display "for _d in $SLICER_ADDITIONAL_MODULE_PATHS; do\n" port)
+                      (display "  LD_LIBRARY_PATH=\"$_d${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"\n" port)
+                      (display "done\n" port)
+                      (display "unset IFS\n" port)
+                      (display "if [ -n \"$GUIX_ENVIRONMENT\" ]; then\n" port)
+                      (display "  _guix_mods=\"$GUIX_ENVIRONMENT/lib/SlicerCustomAppTemplate-5.8/qt-loadable-modules\"\n" port)
+                      (display "  if [ -d \"$_guix_mods\" ]; then\n" port)
+                      (display "    LD_LIBRARY_PATH=\"$_guix_mods${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"\n" port)
+                      (display "  fi\n" port)
+                      (display "fi\n" port)
+                      (display "export LD_LIBRARY_PATH\n" port)
                       (display "export PIP_USER=1\n" port)
                       (display "_dir=\"$(dirname \"$(readlink -f \"$0\")\")\"\n" port)
                       (display "exec \"$_dir/SlicerCustomAppTemplateApp-real\" \"$@\"\n" port)))
