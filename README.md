@@ -11,7 +11,7 @@ MPE Research Project 2025-2026
         (name 'systole)
         (url "https://github.com/SystoleOS/guix-systole.git")
         (branch "main")
-	(commit "3b42810"))
+		(commit "3b42810"))
       (channel
         (name 'mvox)
         (url "https://github.com/benzwick/guix-mvox.git")
@@ -33,18 +33,31 @@ MPE Research Project 2025-2026
 ## Installing custom extension package - myext
 `myext` is a Guix package that builds and installs `LoadableMVoxMeshGen`, a Slicer C++ loadable module version of mvox.
 </br>
-To install:
+For SlicerCustomAppTemplate:
+First create a manifest.scm:
 ```
-guix pull
-guix install myext
+(specifications->manifest
+ '("slicer-custom-app-template"
+   "myext-custom-app"
+   "mvox"
+   "slicer-terminologies-custom-app"
+   "slicer-subjecthierarchy-custom-app"
+   "slicer-colors-custom-app"
+   "slicer-annotations-custom-app"
+   "slicer-units-custom-app"
+   "slicer-cameras-custom-app"
+   "slicer-data-custom-app"
+   "slicer-volumes-custom-app"
+   "slicer-models-custom-app"
+   "slicer-markups-custom-app"
+   "slicer-transforms-custom-app"
+   "slicer-segmentations-custom-app"))
 ```
-To load the module in Slicer:
+Then install using:
 ```
-Slicer --additional-module-paths \
-  $(guix package --list-installed | grep myext | awk '{print $4}')/lib/Slicer-5.8/qt-loadable-modules
+guix package -manifest=path/to/manifest.scm
 ```
-What gets installed:
+To undo changes:
 ```
-<store>/myext-0.1/lib/Slicer-5.8/qt-loadable-modules/libqSlicerLoadableMVoxMeshGenModule.so
-<store>/myext-0.1/lib/Slicer-5.8/qt-loadable-modules/libvtkSlicerLoadableMVoxMeshGenModuleLogic.so
+guix package --roll-back
 ```
