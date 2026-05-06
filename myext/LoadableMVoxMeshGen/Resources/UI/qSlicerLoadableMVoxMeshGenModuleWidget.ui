@@ -84,7 +84,7 @@
        <widget class="qMRMLNodeComboBox" name="AttributesInputSelector">
         <property name="nodeTypes">
          <stringlist>
-          <string>vtkMRMLLabelMapVolumeNode</string>
+          <string>vtkMRMLScalarVolumeNode</string>
          </stringlist>
         </property>
         <property name="addEnabled">

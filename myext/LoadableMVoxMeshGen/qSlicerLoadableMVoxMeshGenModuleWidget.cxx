@@ -10,6 +10,7 @@
 #include "vtkSlicerLoadableMVoxMeshGenLogic.h"
 
 // MRML includes
+#include <vtkMRMLScene.h>
 #include <vtkMRMLScalarVolumeNode.h>
 #include <vtkMRMLLabelMapVolumeNode.h>
 
@@ -44,9 +45,23 @@ void qSlicerLoadableMVoxMeshGenModuleWidget::setup()
   d->setupUi(this);
   this->Superclass::setup();
 
+  d->MasksInputSelector->setMRMLScene(this->mrmlScene());
+  d->AttributesInputSelector->setMRMLScene(this->mrmlScene());
+  d->TensorsInputSelector->setMRMLScene(this->mrmlScene());
+
   // Connect Apply button
   connect(d->ApplyButton, SIGNAL(clicked()),
           this, SLOT(onApplyButtonClicked()));
+}
+
+//-----------------------------------------------------------------------------
+void qSlicerLoadableMVoxMeshGenModuleWidget::setMRMLScene(vtkMRMLScene* scene)
+{
+  Q_D(qSlicerLoadableMVoxMeshGenModuleWidget);
+  this->Superclass::setMRMLScene(scene);
+  d->MasksInputSelector->setMRMLScene(scene);
+  d->AttributesInputSelector->setMRMLScene(scene);
+  d->TensorsInputSelector->setMRMLScene(scene);
 }
 
 //-----------------------------------------------------------------------------

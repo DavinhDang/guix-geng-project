@@ -8,6 +8,7 @@
 
 class qSlicerLoadableMVoxMeshGenModuleWidgetPrivate;
 class vtkMRMLNode;
+class vtkMRMLScene;
 
 class Q_SLICER_QTMODULES_LoadableMVoxMeshGen_EXPORT qSlicerLoadableMVoxMeshGenModuleWidget :
   public qSlicerAbstractModuleWidget
@@ -21,6 +22,7 @@ public:
   virtual ~qSlicerLoadableMVoxMeshGenModuleWidget();
 
 public slots:
+  void setMRMLScene(vtkMRMLScene* scene) override;
 
 protected:
   QScopedPointer<qSlicerLoadableMVoxMeshGenModuleWidgetPrivate> d_ptr;
