@@ -26,10 +26,10 @@ LIB-SUBDIR is the Slicer lib directory name, e.g. \"Slicer-5.8\" or
         (method git-fetch)
         (uri (git-reference
               (url "https://github.com/DavinhDang/guix-geng-project")
-              (commit "3cd45e98365d5a754886304d937a0818add3eea7")))
+              (commit "811b9d2e70abab76ee0f99f410caee5ec734c115")))
         (file-name (git-file-name name version))
         (sha256
-          (base32 "04l9d4mky261ixd106v749p25140a0wclrp6xj9xaa7zvnvr96ip"))))
+          (base32 "0r758bqn4h33hhkdbww6pfrqx59n271qyja3v644d7aqgpaql93d"))))
     (build-system cmake-build-system)
     (arguments
       (list
