@@ -29,7 +29,7 @@ LIB-SUBDIR is the Slicer lib directory name, e.g. \"Slicer-5.8\" or
               (commit "811b9d2e70abab76ee0f99f410caee5ec734c115")))
         (file-name (git-file-name name version))
         (sha256
-          (base32 "0r758bqn4h33hhkdbww6pfrqx59n271qyja3v644d7aqgpaql93d"))))
+          (base32 "1g18cj475nl78vjgr912nqq575r21lagxhwp8whp5ygyxcddn2cx"))))
     (build-system cmake-build-system)
     (arguments
       (list
