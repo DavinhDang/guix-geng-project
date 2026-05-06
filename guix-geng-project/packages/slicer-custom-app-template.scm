@@ -237,7 +237,10 @@
                    "-DSlicer_INSTALL_DEVELOPMENT:BOOL=ON"
                    (string-append "-DSlicer_DIR="
                                   #$slicer-custom-app-template
-                                  "/lib/SlicerCustomAppTemplate-5.8"))
+                                  "/lib/SlicerCustomAppTemplate-5.8")
+                   (string-append "-DCMAKE_CXX_FLAGS=-I"
+                                  #$slicer-custom-app-template
+                                  "/include/SlicerCustomAppTemplate-5.8"))
              #$extra-configure-flags)
           #:phases
           #~(modify-phases %standard-phases
