@@ -6,7 +6,7 @@ MPE Research Project 2025-2026
 (list (channel
         (name 'guix)
         (url "https://git.guix.gnu.org/guix.git")
-        (commit "ba516ec"))
+        (branch "master"))
       (channel
         (name 'systole)
         (url "https://github.com/SystoleOS/guix-systole.git")
